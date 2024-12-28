@@ -1,20 +1,23 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
+import { Dialog } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const navigation = [
   { name: 'Ana Sayfa', href: '/' },
-  { name: 'Hakkımızda', href: '/hakkimizda' },
   { name: 'Hizmetler', href: '/hizmetler' },
-  { name: 'Referanslar', href: '/referanslar' },
   { name: 'Blog', href: '/blog' },
+  { name: 'SSS', href: '/sss' },
+  { name: 'İstatistikler', href: '/istatistikler' },
   { name: 'İletişim', href: '/iletisim' },
 ];
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <header className="bg-white shadow-sm fixed w-full top-0 z-50">
@@ -39,7 +42,9 @@ export default function Navbar() {
             <Link
               key={item.name}
               href={item.href}
-              className="text-sm font-semibold leading-6 text-gray-900 hover:text-blue-600 transition-colors"
+              className={`text-sm font-semibold leading-6 ${
+                pathname === item.href ? 'text-blue-600' : 'text-gray-900 hover:text-blue-600'
+              }`}
             >
               {item.name}
             </Link>
@@ -54,9 +59,9 @@ export default function Navbar() {
           </Link>
         </div>
       </nav>
-      <div className={`lg:hidden ${mobileMenuOpen ? 'fixed inset-0 z-50' : 'hidden'}`}>
-        <div className="fixed inset-0 bg-black/30" aria-hidden="true" onClick={() => setMobileMenuOpen(false)} />
-        <div className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+      <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
+        <div className="fixed inset-0 z-50" />
+        <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
             <Link href="/" className="-m-1.5 p-1.5">
               <span className="text-2xl font-bold text-blue-600">NakliyatPro</span>
@@ -77,7 +82,9 @@ export default function Navbar() {
                   <Link
                     key={item.name}
                     href={item.href}
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                    className={`-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 ${
+                      pathname === item.href ? 'text-blue-600 bg-gray-50' : 'text-gray-900 hover:bg-gray-50'
+                    }`}
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {item.name}
@@ -95,8 +102,8 @@ export default function Navbar() {
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </Dialog.Panel>
+      </Dialog>
     </header>
   );
 } 

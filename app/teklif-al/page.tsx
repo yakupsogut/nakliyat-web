@@ -1,32 +1,30 @@
 'use client';
 
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import Navbar from '../components/Navbar';
 import WhatsAppButton from '../components/WhatsAppButton';
 import Footer from '../components/Footer';
 
+type FormData = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  serviceType: string;
+  moveDate: string;
+  fromAddress: string;
+  toAddress: string;
+  notes: string;
+};
+
 export default function QuoteRequest() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<FormData>();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
-    setSubmitStatus('idle');
-
-    const formData = new FormData(e.currentTarget);
-    const data = {
-      firstName: formData.get('first-name'),
-      lastName: formData.get('last-name'),
-      email: formData.get('email'),
-      phone: formData.get('phone'),
-      serviceType: formData.get('service-type'),
-      moveDate: formData.get('move-date'),
-      fromAddress: formData.get('from-address'),
-      toAddress: formData.get('to-address'),
-      notes: formData.get('notes'),
-    };
-
     try {
       const response = await fetch('/api/teklif', {
         method: 'POST',
@@ -36,15 +34,15 @@ export default function QuoteRequest() {
         body: JSON.stringify(data),
       });
 
-      if (!response.ok) {
-        throw new Error('Bir hata oluştu');
+      if (response.ok) {
+        toast.success('Teklif talebiniz başarıyla alındı!');
+        reset(); // Form verilerini temizle
+      } else {
+        toast.error('Bir hata oluştu. Lütfen tekrar deneyin.');
       }
-
-      setSubmitStatus('success');
-      e.currentTarget.reset();
     } catch (error) {
-      console.error('Hata:', error);
-      setSubmitStatus('error');
+      console.error('Form gönderme hatası:', error);
+      toast.error('Bir hata oluştu. Lütfen tekrar deneyin.');
     } finally {
       setIsSubmitting(false);
     }
@@ -62,42 +60,8 @@ export default function QuoteRequest() {
             </p>
           </div>
 
-          {submitStatus === 'success' && (
-            <div className="mx-auto mt-6 max-w-2xl rounded-md bg-green-50 p-4">
-              <div className="flex">
-                <div className="flex-shrink-0">
-                  <svg className="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <div className="ml-3">
-                  <p className="text-sm font-medium text-green-800">
-                    Talebiniz başarıyla alındı. En kısa sürede size ulaşacağız.
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {submitStatus === 'error' && (
-            <div className="mx-auto mt-6 max-w-2xl rounded-md bg-red-50 p-4">
-              <div className="flex">
-                <div className="flex-shrink-0">
-                  <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <div className="ml-3">
-                  <p className="text-sm font-medium text-red-800">
-                    Bir hata oluştu. Lütfen daha sonra tekrar deneyin.
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
-
           <div className="mx-auto mt-16 max-w-2xl">
-            <form onSubmit={handleSubmit} className="space-y-8">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
               {/* Kişisel Bilgiler */}
               <div className="border-b border-gray-900/10 pb-8">
                 <h3 className="text-lg font-semibold leading-7 text-gray-900">Kişisel Bilgiler</h3>
@@ -108,13 +72,14 @@ export default function QuoteRequest() {
                     </label>
                     <div className="mt-2">
                       <input
-                        required
                         type="text"
-                        name="first-name"
                         id="first-name"
-                        autoComplete="given-name"
+                        {...register('firstName', { required: 'Ad gereklidir' })}
                         className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
                       />
+                      {errors.firstName && (
+                        <p className="mt-2 text-sm text-red-600">{errors.firstName.message}</p>
+                      )}
                     </div>
                   </div>
 
@@ -124,13 +89,14 @@ export default function QuoteRequest() {
                     </label>
                     <div className="mt-2">
                       <input
-                        required
                         type="text"
-                        name="last-name"
                         id="last-name"
-                        autoComplete="family-name"
+                        {...register('lastName', { required: 'Soyad gereklidir' })}
                         className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
                       />
+                      {errors.lastName && (
+                        <p className="mt-2 text-sm text-red-600">{errors.lastName.message}</p>
+                      )}
                     </div>
                   </div>
 
@@ -140,13 +106,20 @@ export default function QuoteRequest() {
                     </label>
                     <div className="mt-2">
                       <input
-                        required
                         type="email"
-                        name="email"
                         id="email"
-                        autoComplete="email"
+                        {...register('email', {
+                          required: 'E-posta gereklidir',
+                          pattern: {
+                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                            message: 'Geçerli bir e-posta adresi giriniz',
+                          },
+                        })}
                         className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
                       />
+                      {errors.email && (
+                        <p className="mt-2 text-sm text-red-600">{errors.email.message}</p>
+                      )}
                     </div>
                   </div>
 
@@ -156,13 +129,20 @@ export default function QuoteRequest() {
                     </label>
                     <div className="mt-2">
                       <input
-                        required
                         type="tel"
-                        name="phone"
                         id="phone"
-                        autoComplete="tel"
+                        {...register('phone', {
+                          required: 'Telefon numarası gereklidir',
+                          pattern: {
+                            value: /^[0-9\s+()-]+$/,
+                            message: 'Geçerli bir telefon numarası giriniz',
+                          },
+                        })}
                         className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
                       />
+                      {errors.phone && (
+                        <p className="mt-2 text-sm text-red-600">{errors.phone.message}</p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -178,18 +158,20 @@ export default function QuoteRequest() {
                     </label>
                     <div className="mt-2">
                       <select
-                        required
                         id="service-type"
-                        name="service-type"
+                        {...register('serviceType', { required: 'Hizmet türü seçiniz' })}
                         className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
                       >
                         <option value="">Seçiniz</option>
-                        <option>Evden Eve Nakliyat</option>
-                        <option>Ofis Taşıma</option>
-                        <option>Şehirler Arası Nakliyat</option>
-                        <option>Asansörlü Taşıma</option>
-                        <option>Parça Eşya Taşıma</option>
+                        <option value="Evden Eve Nakliyat">Evden Eve Nakliyat</option>
+                        <option value="Ofis Taşıma">Ofis Taşıma</option>
+                        <option value="Şehirler Arası Nakliyat">Şehirler Arası Nakliyat</option>
+                        <option value="Asansörlü Taşıma">Asansörlü Taşıma</option>
+                        <option value="Parça Eşya Taşıma">Parça Eşya Taşıma</option>
                       </select>
+                      {errors.serviceType && (
+                        <p className="mt-2 text-sm text-red-600">{errors.serviceType.message}</p>
+                      )}
                     </div>
                   </div>
 
@@ -199,12 +181,14 @@ export default function QuoteRequest() {
                     </label>
                     <div className="mt-2">
                       <input
-                        required
                         type="date"
-                        name="move-date"
                         id="move-date"
+                        {...register('moveDate', { required: 'Taşınma tarihi gereklidir' })}
                         className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
                       />
+                      {errors.moveDate && (
+                        <p className="mt-2 text-sm text-red-600">{errors.moveDate.message}</p>
+                      )}
                     </div>
                   </div>
 
@@ -214,12 +198,14 @@ export default function QuoteRequest() {
                     </label>
                     <div className="mt-2">
                       <textarea
-                        required
-                        name="from-address"
                         id="from-address"
+                        {...register('fromAddress', { required: 'Mevcut adres gereklidir' })}
                         rows={3}
                         className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
                       />
+                      {errors.fromAddress && (
+                        <p className="mt-2 text-sm text-red-600">{errors.fromAddress.message}</p>
+                      )}
                     </div>
                   </div>
 
@@ -229,12 +215,14 @@ export default function QuoteRequest() {
                     </label>
                     <div className="mt-2">
                       <textarea
-                        required
-                        name="to-address"
                         id="to-address"
+                        {...register('toAddress', { required: 'Taşınılacak adres gereklidir' })}
                         rows={3}
                         className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
                       />
+                      {errors.toAddress && (
+                        <p className="mt-2 text-sm text-red-600">{errors.toAddress.message}</p>
+                      )}
                     </div>
                   </div>
 
@@ -244,8 +232,8 @@ export default function QuoteRequest() {
                     </label>
                     <div className="mt-2">
                       <textarea
-                        name="notes"
                         id="notes"
+                        {...register('notes')}
                         rows={4}
                         placeholder="Taşınacak özel eşyalar, kat bilgisi, asansör durumu vb."
                         className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
@@ -255,15 +243,13 @@ export default function QuoteRequest() {
                 </div>
               </div>
 
-              <div className="mt-8 flex justify-end">
+              <div>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className={`rounded-md bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 ${
-                    isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
-                  }`}
+                  className="flex w-full justify-center rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isSubmitting ? 'Gönderiliyor...' : 'Teklif İste'}
+                  {isSubmitting ? 'Gönderiliyor...' : 'Teklif Al'}
                 </button>
               </div>
             </form>

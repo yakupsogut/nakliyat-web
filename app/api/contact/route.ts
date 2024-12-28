@@ -1,38 +1,24 @@
 import { NextResponse } from 'next/server';
-import sgMail from '@sendgrid/mail';
-
-// SendGrid API anahtarını ayarla
-sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
+import { createIletisimMesaji } from '@/lib/db';
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const { name, email, phone, message } = body;
-
-    // E-posta içeriğini oluştur
-    const msg = {
-      to: process.env.CONTACT_EMAIL || '', // Alıcı e-posta adresi
-      from: process.env.SENDGRID_FROM_EMAIL || '', // Gönderen e-posta adresi (SendGrid'de doğrulanmış olmalı)
-      subject: 'Yeni İletişim Formu Mesajı',
-      text: `Ad Soyad: ${name}\nE-posta: ${email}\nTelefon: ${phone}\n\nMesaj:\n${message}`,
-      html: `
-        <h3>Yeni İletişim Formu Mesajı</h3>
-        <p><strong>Ad Soyad:</strong> ${name}</p>
-        <p><strong>E-posta:</strong> ${email}</p>
-        <p><strong>Telefon:</strong> ${phone}</p>
-        <p><strong>Mesaj:</strong></p>
-        <p>${message}</p>
-      `,
+    const data = await request.json();
+    
+    const mesajData = {
+      ad_soyad: data.name,
+      email: data.email,
+      telefon: data.phone,
+      mesaj: data.message
     };
 
-    // E-postayı gönder
-    await sgMail.send(msg);
+    const mesaj = await createIletisimMesaji(mesajData);
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, data: mesaj });
   } catch (error) {
-    console.error('E-posta gönderimi sırasında hata:', error);
+    console.error('İletişim mesajı oluşturma hatası:', error);
     return NextResponse.json(
-      { error: 'Bir hata oluştu' },
+      { success: false, error: 'İletişim mesajı oluşturulurken bir hata oluştu' },
       { status: 500 }
     );
   }
