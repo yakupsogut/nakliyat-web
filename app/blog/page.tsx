@@ -13,7 +13,6 @@ interface BlogPost {
   baslik: string;
   ozet: string;
   kapak_resmi: string;
-  yazar: string;
   kategori: string;
   created_at: string;
   slug: string;
@@ -104,14 +103,6 @@ export default function BlogPage() {
                       <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">
                         {post.ozet}
                       </p>
-                    </div>
-                    <div className="relative mt-8 flex items-center gap-x-4">
-                      <div className="text-sm leading-6">
-                        <p className="font-semibold text-gray-900">
-                          <span className="absolute inset-0" />
-                          {post.yazar}
-                        </p>
-                      </div>
                     </div>
                   </div>
                 </article>
