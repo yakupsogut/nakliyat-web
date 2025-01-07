@@ -2,11 +2,19 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
-import defaultMetadata from "./metadata";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = defaultMetadata;
+export const metadata: Metadata = {
+  title: 'NakliyatPro - Profesyonel Nakliyat Yönetimi',
+  description: 'Profesyonel nakliyat hizmetleri ve yönetim sistemi',
+  icons: {
+    icon: {
+      url: '/icon.svg',
+      type: 'image/svg+xml',
+    },
+  },
+};
 
 export default function RootLayout({
   children,

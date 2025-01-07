@@ -10,7 +10,7 @@ import {
   UserGroupIcon,
   ChartBarIcon,
 } from "@heroicons/react/24/outline";
-import Image from 'next/image';
+import Logo from "@/app/components/Logo";
 
 interface AdminUser {
   id: string;
@@ -52,13 +52,7 @@ export default function AdminSidebar({ user }: AdminSidebarProps) {
       <div className="flex-1 flex flex-col min-h-0 bg-gray-800">
         <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
           <div className="flex items-center flex-shrink-0 px-4">
-            <Image
-              className="h-8 w-auto"
-              src="/logo.png"
-              alt="Nakliyat Pro"
-              width={32}
-              height={32}
-            />
+            <Logo className="h-8 text-white" />
           </div>
           <nav className="mt-5 flex-1 px-2 space-y-1">
             {filteredNavigation.map((item) => {
