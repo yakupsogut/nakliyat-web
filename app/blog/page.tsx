@@ -30,7 +30,7 @@ export default function BlogPage() {
           .from('blog')
           .select('*')
           .eq('aktif', true)
-          .order('created_at', { ascending: false });
+          .order('siralama', { ascending: true });
 
         if (error) throw error;
         setPosts(data || []);

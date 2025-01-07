@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
-import { PencilIcon, TrashIcon, PlusIcon, ArrowUpIcon, ArrowDownIcon } from "@heroicons/react/24/outline";
+import { PencilIcon, TrashIcon, PlusIcon, ArrowUpIcon, ArrowDownIcon, Bars3Icon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 
 interface BlogPost {
@@ -20,6 +20,8 @@ interface BlogPost {
 export default function AdminBlog() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
+  const [draggingId, setDraggingId] = useState<number | null>(null);
+  const [dragOverId, setDragOverId] = useState<number | null>(null);
 
   useEffect(() => {
     fetchPosts();
@@ -75,37 +77,62 @@ export default function AdminBlog() {
     }
   };
 
-  const handleReorder = async (id: number, direction: 'up' | 'down') => {
-    const currentPost = posts.find(post => post.id === id);
-    if (!currentPost) return;
+  const handleDragStart = (e: React.DragEvent<HTMLTableRowElement>, id: number) => {
+    setDraggingId(id);
+    e.currentTarget.classList.add('opacity-50');
+  };
 
-    const currentIndex = posts.indexOf(currentPost);
-    const newIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
+  const handleDragEnd = (e: React.DragEvent<HTMLTableRowElement>) => {
+    setDraggingId(null);
+    setDragOverId(null);
+    e.currentTarget.classList.remove('opacity-50');
+  };
 
-    if (newIndex < 0 || newIndex >= posts.length) return;
+  const handleDragOver = (e: React.DragEvent<HTMLTableRowElement>, id: number) => {
+    e.preventDefault();
+    setDragOverId(id);
+  };
 
-    const otherPost = posts[newIndex];
+  const handleDrop = async (e: React.DragEvent<HTMLTableRowElement>, targetId: number) => {
+    e.preventDefault();
+    if (!draggingId || draggingId === targetId) return;
+
+    const sourcePost = posts.find(p => p.id === draggingId);
+    const targetPost = posts.find(p => p.id === targetId);
+    if (!sourcePost || !targetPost) return;
 
     try {
-      // İki yazının sıralamasını değiştir
-      const { error: error1 } = await supabase
-        .from('blog')
-        .update({ siralama: otherPost.siralama })
-        .eq('id', currentPost.id);
+      // Sıralama değerlerini güncelle
+      const updates = posts.map(post => {
+        if (post.id === draggingId) {
+          return { ...post, siralama: targetPost.siralama };
+        }
+        if (sourcePost.siralama < targetPost.siralama) {
+          // Yukarıdan aşağıya sürükleme
+          if (post.siralama <= targetPost.siralama && post.siralama > sourcePost.siralama) {
+            return { ...post, siralama: post.siralama - 1 };
+          }
+        } else {
+          // Aşağıdan yukarıya sürükleme
+          if (post.siralama >= targetPost.siralama && post.siralama < sourcePost.siralama) {
+            return { ...post, siralama: post.siralama + 1 };
+          }
+        }
+        return post;
+      });
 
-      const { error: error2 } = await supabase
-        .from('blog')
-        .update({ siralama: currentPost.siralama })
-        .eq('id', otherPost.id);
+      // Veritabanını güncelle
+      for (const post of updates) {
+        const { error } = await supabase
+          .from('blog')
+          .update({ siralama: post.siralama })
+          .eq('id', post.id);
 
-      if (error1 || error2) throw error1 || error2;
+        if (error) throw error;
+      }
 
       // State'i güncelle
-      const newPosts = [...posts];
-      newPosts[currentIndex] = { ...currentPost, siralama: otherPost.siralama };
-      newPosts[newIndex] = { ...otherPost, siralama: currentPost.siralama };
-      newPosts.sort((a, b) => a.siralama - b.siralama);
-      setPosts(newPosts);
+      setPosts(updates.sort((a, b) => a.siralama - b.siralama));
     } catch (error) {
       console.error('Error reordering posts:', error);
     }
@@ -160,27 +187,22 @@ export default function AdminBlog() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-600">
-            {posts.map((post, index) => (
-              <tr key={post.id} className="hover:bg-gray-600">
+            {posts.map((post) => (
+              <tr
+                key={post.id}
+                draggable
+                onDragStart={(e) => handleDragStart(e, post.id)}
+                onDragEnd={handleDragEnd}
+                onDragOver={(e) => handleDragOver(e, post.id)}
+                onDrop={(e) => handleDrop(e, post.id)}
+                className={`hover:bg-gray-600 cursor-move transition-colors ${
+                  dragOverId === post.id ? 'border-t-2 border-indigo-500' : ''
+                }`}
+              >
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center space-x-2">
+                    <Bars3Icon className="w-5 h-5 text-gray-400" />
                     <span className="text-sm text-gray-100">{post.siralama}</span>
-                    <div className="flex flex-col">
-                      <button
-                        onClick={() => handleReorder(post.id, 'up')}
-                        disabled={index === 0}
-                        className="text-gray-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
-                      >
-                        <ArrowUpIcon className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={() => handleReorder(post.id, 'down')}
-                        disabled={index === posts.length - 1}
-                        className="text-gray-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
-                      >
-                        <ArrowDownIcon className="w-4 h-4" />
-                      </button>
-                    </div>
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
