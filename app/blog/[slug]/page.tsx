@@ -197,14 +197,6 @@ export default function BlogDetay({ params }: {
                 <span className="px-3 py-1 bg-blue-600 text-white rounded-full text-sm font-medium">
                   {post.kategori}
                 </span>
-                <time className="text-gray-500 text-sm">
-                  {new Date(post.created_at).toLocaleDateString('tr-TR', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })}
-                </time>
-                <span className="text-gray-500 text-sm">•</span>
                 <span className="text-gray-500 text-sm">{readingTime} dk okuma</span>
               </div>
               

@@ -47,65 +47,70 @@ export default function BlogPage() {
     <main className="min-h-screen bg-white">
       <Navbar />
       
-      <div className="py-24 sm:py-32">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      {/* Hero Bölümü */}
+      <div className="relative bg-gradient-to-b from-blue-50 to-white pt-20 sm:pt-28 pb-12 sm:pb-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
               Blog
             </h1>
-            <p className="mt-6 text-lg leading-8 text-gray-600">
+            <p className="mt-4 sm:mt-6 text-base sm:text-lg leading-7 sm:leading-8 text-gray-600">
               Nakliyat ve taşımacılık hakkında faydalı bilgiler, ipuçları ve güncel haberler.
             </p>
           </div>
+        </div>
+      </div>
 
+      {/* Blog Yazıları */}
+      <div className="py-6 sm:py-8 -mt-6 sm:-mt-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {isLoading ? (
-            <div className="mt-16 text-center">
-              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
+            <div className="flex justify-center items-center min-h-[300px] sm:min-h-[400px]">
+              <div className="inline-block h-10 w-10 sm:h-12 sm:w-12 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
                 <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
                   Yükleniyor...
                 </span>
               </div>
             </div>
           ) : (
-            <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
               {posts.map((post) => (
-                <article key={post.id} className="flex flex-col items-start">
-                  <div className="relative w-full">
-                    <Image
-                      src={post.kapak_resmi}
-                      alt={post.baslik}
-                      width={800}
-                      height={600}
-                      className="aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]"
-                    />
-                    <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
-                  </div>
-                  <div className="max-w-xl">
-                    <div className="mt-8 flex items-center gap-x-4 text-xs">
-                      <time dateTime={post.created_at} className="text-gray-500">
-                        {new Date(post.created_at).toLocaleDateString('tr-TR', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric'
-                        })}
-                      </time>
-                      <span className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100">
-                        {post.kategori}
-                      </span>
+                <Link 
+                  key={post.id} 
+                  href={`/blog/${post.slug}`}
+                  className="group block h-full"
+                >
+                  <article className="bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow hover:shadow-lg sm:shadow-lg sm:hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
+                    <div className="aspect-[16/9] relative overflow-hidden">
+                      <Image
+                        src={post.kapak_resmi}
+                        alt={post.baslik}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
                     </div>
-                    <div className="group relative">
-                      <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
-                        <Link href={`/blog/${post.slug}`}>
-                          <span className="absolute inset-0" />
-                          {post.baslik}
-                        </Link>
-                      </h3>
-                      <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">
+                    <div className="p-4 sm:p-6 flex flex-col flex-grow">
+                      <div className="flex items-center mb-3 sm:mb-4">
+                        <span className="inline-flex items-center rounded-full bg-blue-50 px-2.5 sm:px-3 py-1 text-xs sm:text-sm font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
+                          {post.kategori}
+                        </span>
+                      </div>
+                      <h2 className="text-lg sm:text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors mb-0 line-clamp-2">
+                        {post.baslik}
+                      </h2>
+                      <p className="mt-1 text-sm sm:text-base text-gray-600 line-clamp-3 mb-3 sm:mb-4">
                         {post.ozet}
                       </p>
+                      <div className="mt-auto flex items-center text-blue-600 font-medium text-sm sm:text-base">
+                        Devamını Oku
+                        <svg className="ml-1 sm:ml-2 w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </div>
                     </div>
-                  </div>
-                </article>
+                  </article>
+                </Link>
               ))}
             </div>
           )}
