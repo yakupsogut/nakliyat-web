@@ -7,6 +7,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function HizmetlerPage() {
   const [hizmetler, setHizmetler] = useState<Hizmet[]>([]);
@@ -60,9 +61,11 @@ export default function HizmetlerPage() {
                   <Link href={`/hizmetler/${hizmet.id}`} className="w-full">
                     {hizmet.resim_url && (
                       <div className="relative w-full">
-                        <img
+                        <Image
                           src={hizmet.resim_url}
                           alt={hizmet.baslik}
+                          width={1200}
+                          height={675}
                           className="aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]"
                         />
                       </div>

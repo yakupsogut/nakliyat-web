@@ -1,55 +1,33 @@
-'use client';
-
-import { useEffect, useState } from 'react';
 import { getHizmetById } from '@/lib/db';
 import type { Hizmet } from '@/lib/types';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import WhatsAppButton from '../../components/WhatsAppButton';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import Image from 'next/image';
+import { Metadata } from "next";
 
-export default function HizmetDetay() {
-  const params = useParams();
-  const [hizmet, setHizmet] = useState<Hizmet | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const hizmet = await getHizmetById(Number(id));
+  return {
+    title: hizmet ? `${hizmet.baslik} - Hizmetlerimiz` : 'Hizmet Bulunamadı',
+  };
+}
 
-  useEffect(() => {
-    const fetchHizmet = async () => {
-      try {
-        if (params.id) {
-          const data = await getHizmetById(Number(params.id));
-          setHizmet(data);
-        }
-      } catch (error) {
-        console.error('Hizmet detayı yüklenirken hata:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
 
-    fetchHizmet();
-  }, [params.id]);
 
-  if (isLoading) {
-    return (
-      <main className="min-h-screen bg-white">
-        <Navbar />
-        <div className="py-24 sm:py-32">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="mt-16 text-center">
-              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
-                <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
-                  Yükleniyor...
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <Footer />
-      </main>
-    );
-  }
+export default async function HizmetDetay({
+  params
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const hizmet: Hizmet | null = await getHizmetById(Number(id));
 
   if (!hizmet) {
     return (
@@ -100,9 +78,11 @@ export default function HizmetDetay() {
 
             {hizmet.resim_url && (
               <div className="mt-8">
-                <img
+                <Image
                   src={hizmet.resim_url}
                   alt={hizmet.baslik}
+                  width={1200}
+                  height={675}
                   className="w-full rounded-2xl object-cover shadow-lg"
                 />
               </div>

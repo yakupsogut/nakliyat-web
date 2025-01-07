@@ -6,6 +6,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface BlogPost {
   id: number;
@@ -71,9 +72,11 @@ export default function BlogPage() {
               {posts.map((post) => (
                 <article key={post.id} className="flex flex-col items-start">
                   <div className="relative w-full">
-                    <img
+                    <Image
                       src={post.kapak_resmi}
                       alt={post.baslik}
+                      width={800}
+                      height={600}
                       className="aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]"
                     />
                     <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />

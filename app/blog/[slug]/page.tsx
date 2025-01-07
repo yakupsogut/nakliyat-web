@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import WhatsAppButton from '../../components/WhatsAppButton';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface BlogPost {
   id: number;
@@ -19,17 +20,22 @@ interface BlogPost {
   etiketler: string[];
 }
 
-export default function BlogDetay({ params }: { params: { slug: string } }) {
+
+export default function BlogDetay({ params }: {
+  params: Promise<{ slug: string }>;
+}) {
   const [post, setPost] = useState<BlogPost | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const { slug } = use(params);
+  
   useEffect(() => {
     const fetchPost = async () => {
       try {
         const { data, error } = await supabase
           .from('blog')
           .select('*')
-          .eq('slug', params.slug)
+          .eq('slug', slug)
           .eq('aktif', true)
           .single();
 
@@ -43,7 +49,7 @@ export default function BlogDetay({ params }: { params: { slug: string } }) {
     };
 
     fetchPost();
-  }, [params.slug]);
+  }, [slug]);
 
   if (isLoading) {
     return (
@@ -80,7 +86,7 @@ export default function BlogDetay({ params }: { params: { slug: string } }) {
               </p>
               <div className="mt-10">
                 <Link href="/blog" className="text-blue-600 hover:text-blue-500">
-                  ← Blog'a Dön
+                  &larr; Blog&apos;a Dön
                 </Link>
               </div>
             </div>
@@ -129,9 +135,11 @@ export default function BlogDetay({ params }: { params: { slug: string } }) {
 
             {/* Kapak Görseli */}
             <div className="mt-16 relative">
-              <img
+              <Image
                 src={post.kapak_resmi}
                 alt={post.baslik}
+                width={1200}
+                height={675}
                 className="aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover"
               />
             </div>
@@ -160,7 +168,7 @@ export default function BlogDetay({ params }: { params: { slug: string } }) {
             {/* Blog'a Dön */}
             <div className="mx-auto mt-16 max-w-2xl">
               <Link href="/blog" className="text-blue-600 hover:text-blue-500">
-                ← Blog'a Dön
+                &larr; Blog&apos;a Dön
               </Link>
             </div>
           </article>

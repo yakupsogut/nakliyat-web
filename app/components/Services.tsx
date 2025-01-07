@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { getAktifHizmetler } from '@/lib/db';
 import type { Hizmet } from '@/lib/types';
+import Image from 'next/image';
 
 export default function Services() {
   const [hizmetler, setHizmetler] = useState<Hizmet[]>([]);
@@ -58,9 +59,11 @@ export default function Services() {
                 <dd className="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-300">
                   <p className="flex-auto">{hizmet.aciklama}</p>
                   {hizmet.resim_url && (
-                    <img
+                    <Image
                       src={hizmet.resim_url}
                       alt={hizmet.baslik}
+                      width={800}
+                      height={400}
                       className="mt-4 rounded-lg object-cover w-full h-48"
                     />
                   )}

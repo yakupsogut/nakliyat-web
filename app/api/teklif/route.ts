@@ -9,11 +9,12 @@ export async function POST(request: Request) {
       ad_soyad: `${data.firstName} ${data.lastName}`,
       email: data.email,
       telefon: data.phone,
-      nereden: data.fromAddress,
-      nereye: data.toAddress,
+      hizmet_turu: data.serviceType,
+      nereden_adres: data.fromAddress,
+      nereye_adres: data.toAddress,
+      tasima_tarihi: data.moveDate,
       esya_boyutu: data.serviceType,
       asansor_var_mi: data.notes?.toLowerCase().includes('asansör'),
-      tarih: new Date(data.moveDate),
       notlar: data.notes
     };
 
