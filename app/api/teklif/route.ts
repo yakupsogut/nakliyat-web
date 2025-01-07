@@ -13,8 +13,6 @@ export async function POST(request: Request) {
       nereden_adres: data.fromAddress,
       nereye_adres: data.toAddress,
       tasima_tarihi: data.moveDate,
-      esya_boyutu: data.serviceType,
-      asansor_var_mi: data.notes?.toLowerCase().includes('asansör'),
       notlar: data.notes
     };
 
