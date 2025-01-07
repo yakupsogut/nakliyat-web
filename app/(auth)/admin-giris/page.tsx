@@ -1,28 +1,80 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { LockClosedIcon, EnvelopeIcon, KeyIcon } from "@heroicons/react/24/outline";
+import { supabase } from "@/lib/supabase";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const [focusedInput, setFocusedInput] = useState<string | null>(null);
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Oturum kontrolü
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        const { data: adminUser } = await supabase
+          .from('admin_users')
+          .select('id')
+          .eq('id', session.user.id)
+          .single();
+
+        if (adminUser) {
+          router.push('/admin');
+        }
+      }
+    };
+
+    checkSession();
+  }, [router]);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
     try {
-      if (email === "admin@nakliyat.com" && password === "admin123") {
-        router.push("/admin");
-      } else {
-        setError("Geçersiz e-posta veya şifre");
+      const { data, error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (signInError) {
+        throw signInError;
       }
-    } catch {
-      setError("Giriş yapılırken bir hata oluştu");
+
+      if (data?.user) {
+        const { data: adminData, error: adminError } = await supabase
+          .from('admin_users')
+          .select('id')
+          .eq('id', data.user.id)
+          .single();
+
+        if (adminError || !adminData) {
+          throw new Error('Yetkisiz erişim');
+        }
+
+        router.push('/admin');
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(
+          error.message === 'Invalid login credentials'
+            ? 'Geçersiz e-posta veya şifre'
+            : error.message === 'Yetkisiz erişim'
+            ? 'Bu hesap admin paneline erişim yetkisine sahip değil'
+            : 'Giriş yapılırken bir hata oluştu'
+        );
+      } else {
+        setError('Giriş yapılırken bir hata oluştu');
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -52,7 +104,7 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6" noValidate>
             <div className="space-y-5">
               <div
                 className={`group relative rounded-xl transition-all duration-300 ${
@@ -142,12 +194,19 @@ export default function LoginPage() {
 
             <button
               type="submit"
-              className="flex w-full justify-center items-center rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-700 px-8 py-4 text-sm font-semibold text-white hover:from-indigo-500 hover:to-indigo-600 focus:outline-none transition-all duration-300 ease-in-out transform hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl"
+              disabled={loading}
+              className="flex w-full justify-center items-center rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-700 px-8 py-4 text-sm font-semibold text-white hover:from-indigo-500 hover:to-indigo-600 focus:outline-none transition-all duration-300 ease-in-out transform hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Giriş Yap
-              <svg className="ml-2 -mr-1 h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
-              </svg>
+              {loading ? (
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              ) : (
+                <>
+                  Giriş Yap
+                  <svg className="ml-2 -mr-1 h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                  </svg>
+                </>
+              )}
             </button>
           </form>
         </div>
