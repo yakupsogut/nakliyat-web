@@ -1,5 +1,7 @@
 "use client";
 
+import React, { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabase";
 import {
   ChartBarIcon,
   TruckIcon,
@@ -8,8 +10,16 @@ import {
   DocumentTextIcon,
 } from "@heroicons/react/24/outline";
 
-const stats = [
-  { name: "Toplam Teklif", stat: "71", icon: DocumentTextIcon, change: "+12%", changeType: "increase" },
+interface Stats {
+  name: string;
+  stat: string;
+  icon: React.ElementType;
+  change?: string;
+  changeType?: "increase" | "decrease";
+}
+
+const initialStats: Stats[] = [
+  { name: "Toplam Teklif", stat: "0", icon: DocumentTextIcon, change: "0%", changeType: "increase" },
   { name: "Aktif Taşımalar", stat: "23", icon: TruckIcon, change: "+5%", changeType: "increase" },
   { name: "Yeni Müşteriler", stat: "42", icon: UserGroupIcon, change: "+18%", changeType: "increase" },
   { name: "Yeni Mesajlar", stat: "15", icon: ChatBubbleLeftIcon, change: "+7%", changeType: "increase" },
@@ -40,6 +50,59 @@ const recentActivities = [
 ];
 
 export default function DashboardPage() {
+  const [stats, setStats] = useState<Stats[]>(initialStats);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  const fetchStats = async () => {
+    try {
+      // Toplam teklif sayısını al
+      const { count: totalTeklifler, error: teklifError } = await supabase
+        .from('teklifler')
+        .select('*', { count: 'exact', head: true });
+
+      if (teklifError) throw teklifError;
+
+      // Son 30 gündeki teklif sayısını al
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+      
+      const { count: lastMonthTeklifler, error: lastMonthError } = await supabase
+        .from('teklifler')
+        .select('*', { count: 'exact', head: true })
+        .gte('created_at', thirtyDaysAgo.toISOString());
+
+      if (lastMonthError) throw lastMonthError;
+
+      // Değişim yüzdesini hesapla
+      const previousMonthTeklifler = totalTeklifler! - lastMonthTeklifler!;
+      const changePercentage = previousMonthTeklifler === 0 
+        ? 100 
+        : Math.round((lastMonthTeklifler! / previousMonthTeklifler) * 100);
+
+      // Stats'ı güncelle
+      setStats(prevStats => 
+        prevStats.map(stat => 
+          stat.name === "Toplam Teklif" 
+            ? {
+                ...stat,
+                stat: totalTeklifler?.toString() || "0",
+                change: `${changePercentage > 0 ? '+' : ''}${changePercentage}%`,
+                changeType: changePercentage >= 0 ? "increase" : "decrease"
+              }
+            : stat
+        )
+      );
+    } catch (error) {
+      console.error('Error fetching stats:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div>
       {/* İstatistikler */}
@@ -56,14 +119,22 @@ export default function DashboardPage() {
               <p className="ml-16 truncate text-sm font-medium text-gray-400">{item.name}</p>
             </dt>
             <dd className="ml-16 flex items-baseline pb-6 sm:pb-7">
-              <p className="text-2xl font-semibold text-white">{item.stat}</p>
-              <p
-                className={`ml-2 flex items-baseline text-sm font-semibold ${
-                  item.changeType === "increase" ? "text-green-400" : "text-red-400"
-                }`}
-              >
-                {item.change}
-              </p>
+              {loading && item.name === "Toplam Teklif" ? (
+                <div className="h-8 w-16 bg-gray-700 animate-pulse rounded"></div>
+              ) : (
+                <>
+                  <p className="text-2xl font-semibold text-white">{item.stat}</p>
+                  {item.change && (
+                    <p
+                      className={`ml-2 flex items-baseline text-sm font-semibold ${
+                        item.changeType === "increase" ? "text-green-400" : "text-red-400"
+                      }`}
+                    >
+                      {item.change}
+                    </p>
+                  )}
+                </>
+              )}
             </dd>
           </div>
         ))}
