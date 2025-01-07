@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
-import { PencilIcon, TrashIcon, PlusIcon, ArrowUpIcon, ArrowDownIcon, Bars3Icon } from "@heroicons/react/24/outline";
+import { PencilIcon, TrashIcon, PlusIcon, Bars3Icon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import ConfirmModal from "@/app/components/ConfirmModal";
 
 interface BlogPost {
   id: number;
@@ -22,6 +23,15 @@ export default function AdminBlog() {
   const [loading, setLoading] = useState(true);
   const [draggingId, setDraggingId] = useState<number | null>(null);
   const [dragOverId, setDragOverId] = useState<number | null>(null);
+  const [deleteModal, setDeleteModal] = useState<{
+    isOpen: boolean;
+    postId: number | null;
+    postTitle: string;
+  }>({
+    isOpen: false,
+    postId: null,
+    postTitle: "",
+  });
 
   useEffect(() => {
     fetchPosts();
@@ -44,10 +54,6 @@ export default function AdminBlog() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!window.confirm('Bu blog yazısını silmek istediğinizden emin misiniz?')) {
-      return;
-    }
-
     try {
       const { error } = await supabase
         .from('blog')
@@ -56,9 +62,18 @@ export default function AdminBlog() {
 
       if (error) throw error;
       setPosts(posts.filter(post => post.id !== id));
+      setDeleteModal({ isOpen: false, postId: null, postTitle: "" });
     } catch (error) {
       console.error('Error deleting post:', error);
     }
+  };
+
+  const openDeleteModal = (id: number, title: string) => {
+    setDeleteModal({
+      isOpen: true,
+      postId: id,
+      postTitle: title,
+    });
   };
 
   const toggleStatus = async (id: number, currentStatus: boolean) => {
@@ -148,6 +163,14 @@ export default function AdminBlog() {
 
   return (
     <div>
+      <ConfirmModal
+        isOpen={deleteModal.isOpen}
+        onClose={() => setDeleteModal({ isOpen: false, postId: null, postTitle: "" })}
+        onConfirm={() => deleteModal.postId && handleDelete(deleteModal.postId)}
+        title="Blog Yazısını Sil"
+        message={`"${deleteModal.postTitle}" başlıklı blog yazısını silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.`}
+      />
+
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold">Blog Yazıları</h1>
         <Link
@@ -239,7 +262,7 @@ export default function AdminBlog() {
                     <PencilIcon className="w-5 h-5 inline" />
                   </Link>
                   <button
-                    onClick={() => handleDelete(post.id)}
+                    onClick={() => openDeleteModal(post.id, post.baslik)}
                     className="text-red-400 hover:text-red-300"
                   >
                     <TrashIcon className="w-5 h-5 inline" />
