@@ -16,7 +16,7 @@ export default function Testimonials() {
   useEffect(() => {
     const fetchReferanslar = async () => {
       try {
-        const data = await getReferanslar();
+        const data = await getReferanslar(6);
         setReferanslar(data);
       } catch (error) {
         console.error('Referanslar yüklenirken hata:', error);

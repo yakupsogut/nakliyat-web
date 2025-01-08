@@ -9,6 +9,7 @@ import {
   QuestionMarkCircleIcon,
   UserGroupIcon,
   ChartBarIcon,
+  WrenchScrewdriverIcon,
 } from "@heroicons/react/24/outline";
 import Logo from "@/app/components/Logo";
 
@@ -27,6 +28,7 @@ const navigation = [
   { name: "Dashboard", href: "/admin", icon: HomeIcon },
   { name: "Teklifler", href: "/admin/teklifler", icon: DocumentTextIcon },
   { name: "Blog Yazıları", href: "/admin/blog", icon: ChatBubbleLeftIcon },
+  { name: "Hizmetler", href: "/admin/hizmetler", icon: WrenchScrewdriverIcon },
   { name: "SSS", href: "/admin/sss", icon: QuestionMarkCircleIcon },
   { name: "Referanslar", href: "/admin/referanslar", icon: UserGroupIcon },
   { name: "İstatistikler", href: "/admin/istatistikler", icon: ChartBarIcon },

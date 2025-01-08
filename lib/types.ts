@@ -40,4 +40,14 @@ export interface Hizmet {
   aktif: boolean;
   siralama: number;
   ozellikler?: string[];
+}
+
+export interface SSS {
+  id: number;
+  created_at: string;
+  soru: string;
+  cevap: string;
+  kategori: string;
+  siralama: number;
+  aktif: boolean;
 } 

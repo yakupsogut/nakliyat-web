@@ -1,5 +1,5 @@
 import { supabase } from './supabase'
-import { Teklif, IletisimMesaji, Referans, Hizmet } from './types'
+import { Teklif, IletisimMesaji, Referans, Hizmet, SSS } from './types'
 
 // Teklif işlemleri
 export async function createTeklif(teklifData: Omit<Teklif, 'id' | 'created_at' | 'updated_at'>): Promise<Teklif> {
@@ -26,13 +26,19 @@ export async function createIletisimMesaji(mesajData: Omit<IletisimMesaji, 'id' 
 }
 
 // Referans işlemleri
-export async function getReferanslar(): Promise<Referans[]> {
-  const { data, error } = await supabase
+export async function getReferanslar(limit?: number): Promise<Referans[]> {
+  let query = supabase
     .from('referanslar')
     .select('*')
-    .order('created_at', { ascending: false });
+    .order('siralama', { ascending: true });
+
+  if (limit) {
+    query = query.limit(limit);
+  }
+
+  const { data, error } = await query;
   
-  if (error) throw error
+  if (error) throw error;
   return data || [];
 }
 
@@ -51,6 +57,45 @@ export async function getAktifHizmetler(): Promise<Hizmet[]> {
 export async function getHizmetById(id: number): Promise<Hizmet | null> {
   const { data, error } = await supabase
     .from('hizmetler')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (error) throw error;
+  return data;
+}
+
+// SSS işlemleri
+export async function getSSS(limit?: number): Promise<SSS[]> {
+  let query = supabase
+    .from('sss')
+    .select('*')
+    .order('siralama', { ascending: true });
+
+  if (limit) {
+    query = query.limit(limit);
+  }
+
+  const { data, error } = await query;
+  
+  if (error) throw error;
+  return data || [];
+}
+
+export async function getAktifSSS(): Promise<SSS[]> {
+  const { data, error } = await supabase
+    .from('sss')
+    .select('*')
+    .eq('aktif', true)
+    .order('siralama', { ascending: true });
+  
+  if (error) throw error;
+  return data || [];
+}
+
+export async function getSSById(id: number): Promise<SSS | null> {
+  const { data, error } = await supabase
+    .from('sss')
     .select('*')
     .eq('id', id)
     .single();
