@@ -6,19 +6,6 @@ import Image from 'next/image';
 import BlogIcerik from './components/BlogIcerik';
 import BlogPaylas from './components/BlogPaylas';
 
-interface BlogPost {
-  id: number;
-  baslik: string;
-  ozet: string;
-  icerik: string;
-  kapak_resmi: string;
-  yazar: string;
-  kategori: string;
-  created_at: string;
-  etiketler: string[];
-  slug: string;
-}
-
 // Okuma süresini hesaplayan yardımcı fonksiyon
 function getReadingTime(content: string): number {
   const wordsPerMinute = 200;
@@ -133,7 +120,7 @@ export default async function BlogDetay({
                 {/* Etiketler */}
                 {post.etiketler && post.etiketler.length > 0 && (
                   <div className="flex flex-wrap gap-2">
-                    {post.etiketler.map((etiket, index) => (
+                    {post.etiketler.map((etiket: string, index: number) => (
                       <span
                         key={index}
                         className="inline-flex items-center rounded-full bg-gray-100 px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 transition-colors cursor-pointer"

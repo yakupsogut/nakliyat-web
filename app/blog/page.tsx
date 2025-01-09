@@ -5,16 +5,6 @@ import WhatsAppButton from '../components/WhatsAppButton';
 import Link from 'next/link';
 import Image from 'next/image';
 
-interface BlogPost {
-  id: number;
-  baslik: string;
-  ozet: string;
-  kapak_resmi: string;
-  kategori: string;
-  created_at: string;
-  slug: string;
-}
-
 export default async function BlogPage() {
   const { data: posts, error } = await supabase
     .from('blog')

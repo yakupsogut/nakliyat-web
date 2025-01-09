@@ -1,8 +1,8 @@
 import { getReferanslar } from '@/lib/db';
-import type { Referans } from '@/lib/types';
 import { StarIcon } from '@heroicons/react/20/solid';
 import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
+import Link from 'next/link';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -70,12 +70,12 @@ export default async function ReferanslarPage() {
             <p className="text-lg text-gray-600">
               Siz de memnun kaldığınız hizmetlerimiz hakkında görüşlerinizi bizimle paylaşabilirsiniz.
             </p>
-            <a
+            <Link
               href="/iletisim"
               className="mt-6 inline-block rounded-md bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
             >
               Görüş Bildir
-            </a>
+            </Link>
           </div>
         </div>
       </div>

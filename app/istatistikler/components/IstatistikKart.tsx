@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { ChartBarIcon, TruckIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 
 interface Props {
-  id: number;
   baslik: string;
   deger: string;
   aciklama: string;
@@ -17,7 +16,7 @@ const fadeInUp = {
   transition: { duration: 0.5 }
 };
 
-export default function IstatistikKart({ id, baslik, deger, aciklama, ikon }: Props) {
+export default function IstatistikKart({ baslik, deger, aciklama, ikon }: Props) {
   const getIcon = (ikonAdi: string) => {
     switch (ikonAdi) {
       case 'truck':

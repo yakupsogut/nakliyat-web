@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/lib/supabase";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
@@ -28,11 +28,7 @@ export default function TeklifDetay() {
   const [loading, setLoading] = useState(true);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  useEffect(() => {
-    fetchTeklif();
-  }, []);
-
-  const fetchTeklif = async () => {
+  const fetchTeklif = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('teklifler')
@@ -48,7 +44,11 @@ export default function TeklifDetay() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [params.id, router, setTeklif, setLoading]);
+
+  useEffect(() => {
+    fetchTeklif();
+  }, [fetchTeklif]);
 
   const updateDurum = async (yeniDurum: string) => {
     if (!teklif) return;

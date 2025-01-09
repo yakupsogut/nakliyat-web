@@ -2,6 +2,7 @@ import { supabase } from '@/lib/supabase';
 import IstatistikKart from './components/IstatistikKart';
 import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
+import Link from 'next/link';
 
 interface Istatistik {
   id: number;
@@ -42,12 +43,12 @@ export default async function IstatistiklerPage() {
             ))}
           </dl>
           <div className="mt-16 text-center">
-            <a
+            <Link
               href="/iletisim"
               className="rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
             >
               Detaylı Bilgi İçin İletişime Geçin
-            </a>
+            </Link>
           </div>
         </div>
       </div>

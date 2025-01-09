@@ -9,7 +9,7 @@ const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 // 1 yıllık önbellek süresi (saniye cinsinden)
 const CACHE_DURATION = 31536000;
 
-export const runtime = 'edge'; // Edge fonksiyonu olarak çalıştır
+export const runtime = 'nodejs'; // nodejs fonksiyonu olarak çalıştır
 
 export async function GET(request: NextRequest) {
   try {

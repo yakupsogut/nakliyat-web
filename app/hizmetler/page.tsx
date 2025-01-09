@@ -1,5 +1,4 @@
 import { getAktifHizmetler } from '@/lib/db';
-import type { Hizmet } from '@/lib/types';
 import { convertSupabaseImageUrl } from '@/lib/utils';
 import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';

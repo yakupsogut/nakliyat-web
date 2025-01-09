@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, use } from "react";
+import { useState, useEffect, useCallback, use } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { Editor } from "@tinymce/tinymce-react";
@@ -39,11 +39,7 @@ export default function BlogDuzenle({ params }: { params: Promise<{ id: string }
     slug: "",
   });
 
-  useEffect(() => {
-    fetchPost();
-  }, []);
-
-  const fetchPost = async () => {
+  const fetchPost = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from("blog")
@@ -63,7 +59,11 @@ export default function BlogDuzenle({ params }: { params: Promise<{ id: string }
     } finally {
       setLoading(false);
     }
-  };
+  }, [id, setPost, setPreviewImage, setLoading]);
+
+  useEffect(() => {
+    fetchPost();
+  }, [fetchPost]);
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;

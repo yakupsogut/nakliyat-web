@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, use } from "react";
+import { useState, useEffect, useCallback, use } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { Sayfa } from "@/lib/types";
@@ -29,15 +29,7 @@ export default function SayfaDuzenle({ params }: { params: Promise<{ id: string 
     updated_at: new Date().toISOString(),
   });
 
-  useEffect(() => {
-    if (id !== "yeni") {
-      fetchSayfa();
-    } else {
-      setLoading(false);
-    }
-  }, [id]);
-
-  const fetchSayfa = async () => {
+  const fetchSayfa = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from("sayfalar")
@@ -52,7 +44,15 @@ export default function SayfaDuzenle({ params }: { params: Promise<{ id: string 
     } finally {
       setLoading(false);
     }
-  };
+  }, [id, setSayfa, setLoading]);
+
+  useEffect(() => {
+    if (id !== "yeni") {
+      fetchSayfa();
+    } else {
+      setLoading(false);
+    }
+  }, [id, fetchSayfa]);
 
   const handleSave = async () => {
     setSaving(true);

@@ -188,7 +188,7 @@ export default function SSSPage() {
         <div className="sm:flex-auto">
           <h1 className="text-2xl font-semibold text-white">Sık Sorulan Sorular</h1>
           <p className="mt-2 text-sm text-gray-400">
-            SSS'leri görüntüleyin, düzenleyin veya yeni soru ekleyin.
+            SSS&apos;leri görüntüleyin, düzenleyin veya yeni soru ekleyin.
           </p>
         </div>
         <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">

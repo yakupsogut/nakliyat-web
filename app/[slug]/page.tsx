@@ -6,18 +6,16 @@ import Footer from '../components/Footer'
 import WhatsAppButton from '../components/WhatsAppButton'
 import { convertSupabaseImageUrl } from '@/lib/utils'
 
-type Props = {
-  params: { slug: string }
-}
 
 export async function generateMetadata(
-  { params }: Props
+  { params }: { params: Promise<{ slug: string }> }
 ): Promise<Metadata> {
+  const { slug } = await params;
   const supabase = createServerClient()
   const { data: sayfa } = await supabase
     .from('sayfalar')
     .select('*')
-    .eq('slug', params.slug)
+    .eq('slug', slug)
     .single()
 
   if (!sayfa) {
@@ -35,12 +33,13 @@ export async function generateMetadata(
   }
 }
 
-export default async function DynamicPage({ params }: Props) {
+export default async function DynamicPage({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
   const supabase = createServerClient()
   const { data: sayfa } = await supabase
     .from('sayfalar')
     .select('*')
-    .eq('slug', params.slug)
+    .eq('slug', slug)
     .single()
 
   if (!sayfa) {

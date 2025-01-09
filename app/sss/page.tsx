@@ -2,13 +2,7 @@ import { supabase } from '@/lib/supabase';
 import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
 import SSSKategoriListesi from './components/SSSKategoriListesi';
-
-interface SSS {
-  id: number;
-  soru: string;
-  cevap: string;
-  kategori: string;
-}
+import Link from 'next/link';
 
 export default async function SSSPage() {
   const { data: sorular, error } = await supabase
@@ -47,18 +41,18 @@ export default async function SSSPage() {
               Başka sorularınız mı var?
             </p>
             <div className="mt-6 flex justify-center gap-x-6">
-              <a
+              <Link
                 href="/iletisim"
                 className="rounded-md bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
               >
                 Bize Ulaşın
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/teklif-al"
                 className="rounded-md bg-white px-6 py-3 text-base font-semibold text-blue-600 shadow-sm ring-1 ring-inset ring-blue-600 hover:bg-gray-50"
               >
                 Teklif Alın
-              </a>
+              </Link>
             </div>
           </div>
         </div>
