@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createTeklif } from '@/lib/db';
+import { sendTelegramMessage, formatTeklifMessage } from '@/lib/telegram';
 
 export async function POST(request: Request) {
   try {
@@ -17,6 +18,9 @@ export async function POST(request: Request) {
     };
 
     const teklif = await createTeklif(teklifData);
+
+    // Telegram bildirimi gönder
+    await sendTelegramMessage(formatTeklifMessage(teklifData));
 
     return NextResponse.json({ success: true, data: teklif });
   } catch (error) {

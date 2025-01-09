@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createIletisimMesaji } from '@/lib/db';
+import { sendTelegramMessage, formatIletisimMessage } from '@/lib/telegram';
 
 export async function POST(request: Request) {
   try {
@@ -13,6 +14,9 @@ export async function POST(request: Request) {
     };
 
     const mesaj = await createIletisimMesaji(mesajData);
+
+    // Telegram bildirimi gönder
+    await sendTelegramMessage(formatIletisimMessage(mesajData));
 
     return NextResponse.json({ success: true, data: mesaj });
   } catch (error) {
