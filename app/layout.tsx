@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
-import Topbar from "./components/Topbar";
-import Navbar from "./components/Navbar";
+import NavigationWrapper from "./components/NavigationWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,13 +26,9 @@ export default function RootLayout({
     <html lang="tr">
       <body className={inter.className}>
         <Toaster position="top-center" />
-        <div className="fixed w-full top-0 z-50">
-          <Topbar />
-          <Navbar />
-        </div>
-        <div className="pt-[105px]">
+        <NavigationWrapper>
           {children}
-        </div>
+        </NavigationWrapper>
       </body>
     </html>
   );
