@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { getAktifHizmetler } from '@/lib/db';
 import type { Hizmet } from '@/lib/types';
+import { convertSupabaseImageUrl } from '@/lib/utils';
 import Image from 'next/image';
 
 export default function Services() {
@@ -60,7 +61,7 @@ export default function Services() {
                   <p className="flex-auto">{hizmet.aciklama}</p>
                   {hizmet.resim_url && (
                     <Image
-                      src={hizmet.resim_url}
+                      src={convertSupabaseImageUrl(hizmet.resim_url, 'hizmet-images')}
                       alt={hizmet.baslik}
                       width={800}
                       height={400}

@@ -1,5 +1,6 @@
 import { getHizmetById } from '@/lib/db';
 import type { Hizmet } from '@/lib/types';
+import { convertSupabaseImageUrl } from '@/lib/utils';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import WhatsAppButton from '../../components/WhatsAppButton';
@@ -18,8 +19,6 @@ export async function generateMetadata({
     title: hizmet ? `${hizmet.baslik} - Hizmetlerimiz` : 'Hizmet Bulunamadı',
   };
 }
-
-
 
 export default async function HizmetDetay({
   params
@@ -79,7 +78,7 @@ export default async function HizmetDetay({
             {hizmet.resim_url && (
               <div className="mt-8">
                 <Image
-                  src={hizmet.resim_url}
+                  src={convertSupabaseImageUrl(hizmet.resim_url, 'hizmet-images')}
                   alt={hizmet.baslik}
                   width={1200}
                   height={675}

@@ -1,10 +1,8 @@
-'use client';
-
-import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
+import SSSKategoriListesi from './components/SSSKategoriListesi';
 
 interface SSS {
   id: number;
@@ -13,46 +11,20 @@ interface SSS {
   kategori: string;
 }
 
-export default function SSSPage() {
-  const [sorular, setSorular] = useState<SSS[]>([]);
-  const [kategoriler, setKategoriler] = useState<string[]>([]);
-  const [seciliKategori, setSeciliKategori] = useState<string>('');
-  const [isLoading, setIsLoading] = useState(true);
+export default async function SSSPage() {
+  const { data: sorular, error } = await supabase
+    .from('sss')
+    .select('*')
+    .eq('aktif', true)
+    .order('siralama', { ascending: true });
 
-  useEffect(() => {
-    const fetchSSS = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('sss')
-          .select('*')
-          .eq('aktif', true)
-          .order('siralama', { ascending: true });
+  if (error) {
+    console.error('SSS yüklenirken hata:', error);
+    return null;
+  }
 
-        if (error) throw error;
-
-        setSorular(data || []);
-        
-        // Benzersiz kategorileri çıkar
-        const uniqueKategoriler = [...new Set(data?.map(soru => soru.kategori))];
-        setKategoriler(uniqueKategoriler);
-        
-        // İlk kategoriyi seç
-        if (uniqueKategoriler.length > 0) {
-          setSeciliKategori(uniqueKategoriler[0]);
-        }
-      } catch (error) {
-        console.error('SSS yüklenirken hata:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchSSS();
-  }, []);
-
-  const filtrelenmisSSS = seciliKategori
-    ? sorular.filter(soru => soru.kategori === seciliKategori)
-    : sorular;
+  // Benzersiz kategorileri çıkar
+  const kategoriler = [...new Set(sorular?.map(soru => soru.kategori))];
 
   return (
     <main className="min-h-screen bg-white">
@@ -69,48 +41,7 @@ export default function SSSPage() {
             </p>
           </div>
 
-          {isLoading ? (
-            <div className="mt-16 text-center">
-              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
-                <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
-                  Yükleniyor...
-                </span>
-              </div>
-            </div>
-          ) : (
-            <>
-              {/* Kategori Seçimi */}
-              <div className="mt-16 flex justify-center space-x-4">
-                {kategoriler.map((kategori) => (
-                  <button
-                    key={kategori}
-                    onClick={() => setSeciliKategori(kategori)}
-                    className={`px-4 py-2 rounded-md text-sm font-semibold ${
-                      seciliKategori === kategori
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
-                    }`}
-                  >
-                    {kategori}
-                  </button>
-                ))}
-              </div>
-
-              {/* SSS Listesi */}
-              <div className="mt-16 max-w-3xl mx-auto divide-y divide-gray-200">
-                {filtrelenmisSSS.map((soru) => (
-                  <div key={soru.id} className="py-8">
-                    <h3 className="text-xl font-bold text-gray-900">
-                      {soru.soru}
-                    </h3>
-                    <p className="mt-4 text-base text-gray-600">
-                      {soru.cevap}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
+          <SSSKategoriListesi sorular={sorular || []} kategoriler={kategoriler} />
 
           {/* İletişim CTA */}
           <div className="mt-16 text-center">
