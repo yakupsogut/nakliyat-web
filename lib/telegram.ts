@@ -1,14 +1,35 @@
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
+
+async function getActiveChatIds(): Promise<string[]> {
+  const { data, error } = await supabase
+    .from('telegram_notifications')
+    .select('chat_id')
+    .eq('is_active', true);
+
+  if (error) {
+    console.error('Telegram chat ID\'leri alınamadı:', error);
+    return [];
+  }
+
+  return data.map(row => row.chat_id);
+}
+
 export async function sendTelegramMessage(message: string) {
   const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
-  const TELEGRAM_CHAT_IDS = process.env.TELEGRAM_CHAT_IDS?.split(',') || [];
+  const chatIds = await getActiveChatIds();
 
-  if (!TELEGRAM_BOT_TOKEN || TELEGRAM_CHAT_IDS.length === 0) {
-    console.error('Telegram yapılandırması eksik');
+  if (!TELEGRAM_BOT_TOKEN || chatIds.length === 0) {
+    console.error('Telegram yapılandırması eksik veya aktif chat ID bulunamadı');
     return;
   }
 
   try {
-    const sendPromises = TELEGRAM_CHAT_IDS.map(async (chatId) => {
+    const sendPromises = chatIds.map(async (chatId) => {
       const response = await fetch(
         `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
         {
