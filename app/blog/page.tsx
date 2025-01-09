@@ -1,6 +1,5 @@
 import { supabase } from '@/lib/supabase';
 import { convertSupabaseImageUrl } from '@/lib/utils';
-import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
 import Link from 'next/link';
@@ -30,7 +29,6 @@ export default async function BlogPage() {
 
   return (
     <main className="min-h-screen bg-white">
-      <Navbar />
       
       {/* Hero Bölümü */}
       <div className="relative bg-gradient-to-b from-blue-50 to-white pt-20 sm:pt-28 pb-12 sm:pb-16">

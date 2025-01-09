@@ -1,7 +1,6 @@
 import { getHizmetById } from '@/lib/db';
 import type { Hizmet } from '@/lib/types';
 import { convertSupabaseImageUrl } from '@/lib/utils';
-import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import WhatsAppButton from '../../components/WhatsAppButton';
 import Link from 'next/link';
@@ -31,7 +30,6 @@ export default async function HizmetDetay({
   if (!hizmet) {
     return (
       <main className="min-h-screen bg-white">
-        <Navbar />
         <div className="py-24 sm:py-32">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="text-center">
@@ -59,8 +57,7 @@ export default async function HizmetDetay({
 
   return (
     <main className="min-h-screen bg-white">
-      <Navbar />
-      
+
       <div className="py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-3xl">

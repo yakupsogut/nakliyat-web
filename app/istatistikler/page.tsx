@@ -1,6 +1,5 @@
 import { supabase } from '@/lib/supabase';
 import IstatistikKart from './components/IstatistikKart';
-import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
 
@@ -25,7 +24,7 @@ export default async function IstatistiklerPage() {
 
   return (
     <main className="min-h-screen bg-gray-50">
-      <Navbar />
+   
       
       <div className="py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">

@@ -11,6 +11,7 @@ import {
   ChartBarIcon,
   WrenchScrewdriverIcon,
   BellIcon,
+  DocumentDuplicateIcon,
 } from "@heroicons/react/24/outline";
 import Logo from "@/app/components/Logo";
 
@@ -33,6 +34,7 @@ export const adminNavItems = [
   { name: "SSS", href: "/admin/sss", icon: QuestionMarkCircleIcon },
   { name: "Referanslar", href: "/admin/referanslar", icon: UserGroupIcon },
   { name: "İstatistikler", href: "/admin/istatistikler", icon: ChartBarIcon },
+  { name: "Sayfalar", href: "/admin/sayfalar", icon: DocumentDuplicateIcon },
   {
     name: "Telegram Ayarları",
     href: "/admin/telegram-ayarlari",

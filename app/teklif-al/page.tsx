@@ -1,4 +1,3 @@
-import Navbar from '../components/Navbar';
 import WhatsAppButton from '../components/WhatsAppButton';
 import Footer from '../components/Footer';
 import TeklifForm from './components/TeklifForm';
@@ -6,7 +5,7 @@ import TeklifForm from './components/TeklifForm';
 export default function QuoteRequest() {
   return (
     <main className="min-h-screen bg-white">
-      <Navbar />
+      
       <div className="py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">

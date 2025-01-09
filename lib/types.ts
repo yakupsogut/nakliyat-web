@@ -50,4 +50,20 @@ export interface SSS {
   kategori: string;
   siralama: number;
   aktif: boolean;
-} 
+}
+
+export interface Sayfa {
+  id: string
+  slug: string
+  baslik: string
+  icerik: string
+  meta_title: string | null
+  meta_description: string | null
+  created_at: string
+  updated_at: string
+}
+
+export type SayfaIcerik = 
+  | { type: 'heading'; content: string }
+  | { type: 'paragraph'; content: string }
+  | { type: 'image'; url: string; alt: string } 
