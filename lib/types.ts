@@ -81,6 +81,36 @@ export interface SiteAyarlari {
   logo_text: string;
   whatsapp_numara: string | null;
   adres: string | null;
+  
+  // SEO Ayarları
+  site_title: string;
+  site_description: string | null;
+  site_keywords: string | null;
+  favicon_url: string | null;
+  
+  // Open Graph
+  og_title: string | null;
+  og_description: string | null;
+  og_image: string | null;
+  
+  // Twitter Card
+  twitter_card_type: string;
+  twitter_title: string | null;
+  twitter_description: string | null;
+  twitter_image: string | null;
+  
+  // Robots.txt
+  robots_content: string;
+  
+  // Sitemap
+  sitemap_auto_update: boolean;
+  sitemap_default_priority: number;
+  sitemap_default_changefreq: string;
+  
+  // Diğer
+  canonical_url_base: string | null;
+  google_analytics_id: string | null;
+  google_site_verification: string | null;
 }
 
 export interface MenuItem {

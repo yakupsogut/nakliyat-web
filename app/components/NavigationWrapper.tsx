@@ -1,6 +1,7 @@
 'use client';
 
 import Navbar from './Navbar';
+import Topbar from './Topbar';
 import { MenuItem, SiteAyarlari, FooterMenuGroup } from '@/lib/types';
 import Footer from './Footer';
 import { usePathname } from 'next/navigation';
@@ -21,12 +22,19 @@ export default function NavigationWrapper({ children, siteAyarlari, menuItems, f
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar siteAyarlari={siteAyarlari} menuItems={menuItems} />
-      <main className="flex-grow">
-        {children}
-      </main>
-      <Footer siteAyarlari={siteAyarlari} footerMenuGroups={footerMenuGroups} />
-    </div>
+    <>
+   
+        {siteAyarlari?.favicon_url && (
+          <link rel="icon" href={siteAyarlari.favicon_url} />
+        )}
+      <div className="min-h-screen flex flex-col">
+        <Topbar siteAyarlari={siteAyarlari} />
+        <Navbar siteAyarlari={siteAyarlari} menuItems={menuItems} />
+        <main className="flex-grow">
+          {children}
+        </main>
+        <Footer siteAyarlari={siteAyarlari} footerMenuGroups={footerMenuGroups} />
+      </div>
+    </>
   );
 } 

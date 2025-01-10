@@ -1,23 +1,24 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import NavigationWrapper from "./components/NavigationWrapper";
-import { Toaster } from "react-hot-toast";
-import { createServerClient } from "@/lib/supabase";
-import type { FooterMenuGroup, FooterMenuItem, SiteAyarlari } from "@/lib/types";
+import './globals.css';
+import { createServerClient } from '@/lib/supabase';
+import { generateMetadata as generateSeoMetadata } from './components/SeoMeta';
+import NavigationWrapper from './components/NavigationWrapper';
+import { Analytics } from '@/app/components/Analytics';
+import type { FooterMenuGroup, FooterMenuItem, SiteAyarlari } from '@/lib/types';
 
-const inter = Inter({ subsets: ["latin"] });
+export async function generateMetadata() {
+  const supabase = createServerClient();
+  
+  const { data: settings } = await supabase
+    .from('site_settings')
+    .select('*')
+    .single();
 
-export const metadata: Metadata = {
-  title: "NakliyatPro - Evden Eve Nakliyat",
-  description: "Profesyonel evden eve nakliyat hizmetleri",
-  icons: {
-    icon: {
-      url: '/icon.svg',
-      type: 'image/svg+xml',
-    },
-  },
-};
+  if (!settings) {
+    return {};
+  }
+
+  return generateSeoMetadata({ siteSettings: settings });
+}
 
 export default async function RootLayout({
   children,
@@ -25,18 +26,27 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const supabase = createServerClient();
+  
+  // Site ayarlarını al
+  const { data: siteSettings } = await supabase
+    .from('site_settings')
+    .select('*')
+    .single();
 
-  const { data: siteAyarlari } = await supabase
+  // Genel ayarları al
+  const { data: generalSettings } = await supabase
     .from('site_ayarlari')
     .select('*')
     .single();
 
+  // Menü öğelerini al
   const { data: menuItems } = await supabase
     .from('menu_items')
     .select('*')
     .eq('aktif', true)
     .order('sira', { ascending: true });
 
+  // Footer menü gruplarını al
   const { data: footerMenuGroups } = await supabase
     .from('footer_menu_groups')
     .select(`
@@ -54,32 +64,37 @@ export default async function RootLayout({
   })) as FooterMenuGroup[];
 
   // Varsayılan site ayarları
-  const defaultSiteAyarlari: SiteAyarlari = {
-    id: '1',
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-    telefon: '',
-    email: '',
-    facebook_url: null,
-    instagram_url: null,
-    twitter_url: null,
-    logo_url: null,
-    logo_text: 'NakliyatPro',
-    whatsapp_numara: null,
-    adres: null
+  const defaultSettings: Partial<SiteAyarlari> = {
+    logo_text: 'Site Başlığı',
+    site_title: 'Site Başlığı',
+    robots_content: 'User-agent: *\nAllow: /',
+    sitemap_auto_update: true,
+    sitemap_default_priority: 0.5,
+    sitemap_default_changefreq: 'weekly',
+    twitter_card_type: 'summary_large_image',
   };
+
+  // Tüm ayarları birleştir
+  const combinedSettings: SiteAyarlari = {
+    ...defaultSettings,
+    ...generalSettings,
+    ...siteSettings,
+  } as SiteAyarlari;
 
   return (
     <html lang="tr">
-      <body className={inter.className}>
-        <NavigationWrapper 
-          siteAyarlari={siteAyarlari || defaultSiteAyarlari} 
+      
+      <body>
+        <NavigationWrapper
+          siteAyarlari={combinedSettings}
           menuItems={menuItems || []}
           footerMenuGroups={processedFooterGroups}
         >
           {children}
         </NavigationWrapper>
-        <Toaster position="top-right" />
+        {combinedSettings?.google_analytics_id && (
+          <Analytics measurementId={combinedSettings.google_analytics_id} />
+        )}
       </body>
     </html>
   );

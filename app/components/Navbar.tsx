@@ -18,17 +18,20 @@ export default function Navbar({ menuItems, siteAyarlari }: NavbarProps) {
   const pathname = usePathname();
 
   const LogoElement = () => (
-    siteAyarlari.logo_url ? (
-      <Image
-        src={siteAyarlari.logo_url}
-        alt={siteAyarlari.logo_text}
-        width={150}
-        height={40}
-        className="h-10 w-auto"
-      />
-    ) : (
-      <span className="text-2xl font-bold text-blue-600">{siteAyarlari.logo_text}</span>
-    )
+    <div className="flex items-center gap-2">
+      {siteAyarlari.logo_url && (
+        <Image
+          src={siteAyarlari.logo_url}
+          alt={siteAyarlari.logo_text}
+          width={150}
+          height={40}
+          className="h-10 w-auto"
+        />
+      )}
+      {siteAyarlari.logo_text && (
+        <span className="text-2xl font-bold text-blue-600">{siteAyarlari.logo_text}</span>
+      )}
+    </div>
   );
 
   return (
