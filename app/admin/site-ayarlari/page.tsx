@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import type { SiteAyarlari } from "@/lib/types";
-import { toast } from "react-hot-toast";
+import { toast, Toaster } from "react-hot-toast";
 import Image from "next/image";
 
 export default function SiteAyarlariPage() {
@@ -62,9 +62,12 @@ export default function SiteAyarlariPage() {
     setYukleniyor(true);
 
     try {
+      toast.loading('Ayarlar kaydediliyor...', { id: 'settings' });
+
       // Logo yükleme veya silme
       let yeniLogoUrl = ayarlar?.logo_url;
       if (logo) {
+        toast.loading('Logo yükleniyor...', { id: 'logo' });
         const dosyaAdi = `logo-${Date.now()}${logo.name.substring(logo.name.lastIndexOf('.'))}`;
         const { error: uploadError } = await supabase.storage
           .from('site_assets')
@@ -77,6 +80,7 @@ export default function SiteAyarlariPage() {
           .getPublicUrl(dosyaAdi);
 
         yeniLogoUrl = publicUrl;
+        toast.success('Logo başarıyla yüklendi', { id: 'logo' });
       } else if (ayarlar?.logo_url === '') {
         // Logo silindi, eski dosyayı storage'dan da silelim
         const eskiLogoPath = ayarlar?.logo_url?.split('/').pop();
@@ -84,6 +88,7 @@ export default function SiteAyarlariPage() {
           await supabase.storage
             .from('site_assets')
             .remove([eskiLogoPath]);
+          toast.success('Logo başarıyla kaldırıldı');
         }
         yeniLogoUrl = '';
       }
@@ -91,6 +96,7 @@ export default function SiteAyarlariPage() {
       // Favicon yükleme veya silme
       let yeniFaviconUrl = ayarlar?.favicon_url;
       if (favicon) {
+        toast.loading('Favicon yükleniyor...', { id: 'favicon' });
         const dosyaAdi = `favicon-${Date.now()}${favicon.name.substring(favicon.name.lastIndexOf('.'))}`;
         const { error: uploadError } = await supabase.storage
           .from('site_assets')
@@ -103,6 +109,7 @@ export default function SiteAyarlariPage() {
           .getPublicUrl(dosyaAdi);
 
         yeniFaviconUrl = publicUrl;
+        toast.success('Favicon başarıyla yüklendi', { id: 'favicon' });
       } else if (ayarlar?.favicon_url === '') {
         // Favicon silindi, eski dosyayı storage'dan da silelim
         const eskiFaviconPath = ayarlar?.favicon_url?.split('/').pop();
@@ -110,6 +117,7 @@ export default function SiteAyarlariPage() {
           await supabase.storage
             .from('site_assets')
             .remove([eskiFaviconPath]);
+          toast.success('Favicon başarıyla kaldırıldı');
         }
         yeniFaviconUrl = '';
       }
@@ -195,11 +203,11 @@ export default function SiteAyarlariPage() {
 
       if (seoError) throw seoError;
 
-      toast.success('Site ayarları başarıyla güncellendi');
+      toast.success('Site ayarları başarıyla güncellendi', { id: 'settings' });
       getAyarlar();
     } catch (error) {
       console.error('Güncelleme hatası:', error);
-      toast.error('Site ayarları güncellenirken hata oluştu');
+      toast.error('Site ayarları güncellenirken hata oluştu. Lütfen tekrar deneyin.', { id: 'settings' });
     } finally {
       setYukleniyor(false);
     }
@@ -209,6 +217,7 @@ export default function SiteAyarlariPage() {
 
   return (
     <div className="bg-gray-800 min-h-screen">
+      <Toaster position="top-right" />
       <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="bg-gray-900 rounded-lg shadow-lg p-6">
           <div className="mb-6">

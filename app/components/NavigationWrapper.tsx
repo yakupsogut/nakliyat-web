@@ -4,6 +4,7 @@ import Navbar from './Navbar';
 import Topbar from './Topbar';
 import { MenuItem, SiteAyarlari, FooterMenuGroup } from '@/lib/types';
 import Footer from './Footer';
+import WhatsAppButton from './WhatsAppButton';
 import { usePathname } from 'next/navigation';
 
 interface NavigationWrapperProps {
@@ -18,14 +19,23 @@ export default function NavigationWrapper({ children, siteAyarlari, menuItems, f
   const isAdminPage = pathname?.startsWith('/admin');
 
   if (isAdminPage) {
-    return <>{children}</>;
+    return <>
+     <link rel="icon" type="image/x-icon" href="/icon.svg" />
+            <link rel="shortcut icon" type="image/x-icon" href="/icon.svg" />
+            <link rel="apple-touch-icon" href="/icon.svg" />
+    {children}</>;
   }
 
   return (
     <>
    
         {siteAyarlari?.favicon_url && (
-          <link rel="icon" href={siteAyarlari.favicon_url} />
+          <>
+            <link rel="icon" type="image/x-icon" href={siteAyarlari.favicon_url} />
+            <link rel="shortcut icon" type="image/x-icon" href={siteAyarlari.favicon_url} />
+            <link rel="apple-touch-icon" href={siteAyarlari.favicon_url} />
+          </>
+         
         )}
       <div className="min-h-screen flex flex-col">
         <Topbar siteAyarlari={siteAyarlari} />
@@ -34,6 +44,7 @@ export default function NavigationWrapper({ children, siteAyarlari, menuItems, f
           {children}
         </main>
         <Footer siteAyarlari={siteAyarlari} footerMenuGroups={footerMenuGroups} />
+        <WhatsAppButton siteAyarlari={siteAyarlari} />
       </div>
     </>
   );

@@ -1,7 +1,8 @@
 import { supabase } from '@/lib/supabase';
-import WhatsAppButton from '../components/WhatsAppButton';
 import SSSKategoriListesi from './components/SSSKategoriListesi';
 import Link from 'next/link';
+import { createServerClient } from '@/lib/supabase';
+import { Metadata } from 'next';
 
 export default async function SSSPage() {
   const { data: sorular, error } = await supabase
@@ -56,8 +57,31 @@ export default async function SSSPage() {
           </div>
         </div>
       </div>
-
-      <WhatsAppButton />
     </main>
   );
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const supabase = createServerClient();
+  
+  const { data: siteSettings } = await supabase
+    .from('site_settings')
+    .select('*')
+    .single();
+
+  return {
+    title: `Sıkça Sorulan Sorular | ${siteSettings?.site_title}`,
+    description: 'Nakliyat hizmetlerimiz hakkında sık sorulan soruların cevaplarını bulabilirsiniz. Evden eve nakliyat, ofis taşıma ve diğer hizmetlerimiz hakkında merak edilenler.',
+    openGraph: {
+      title: `Sıkça Sorulan Sorular | ${siteSettings?.site_title}`,
+      description: 'Nakliyat hizmetlerimiz hakkında sık sorulan soruların cevaplarını bulabilirsiniz.',
+      type: 'website',
+      images: siteSettings?.og_image ? [{ url: siteSettings.og_image }] : undefined
+    },
+    twitter: {
+      card: 'summary',
+      title: `SSS | ${siteSettings?.site_title}`,
+      description: 'Nakliyat hizmetlerimiz hakkında sık sorulan soruların cevaplarını bulabilirsiniz.'
+    }
+  };
 } 

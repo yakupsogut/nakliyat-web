@@ -20,18 +20,18 @@ export async function GET() {
     }
 
     const baseUrl = settings.canonical_url_base.replace(/\/$/, '');
-    const defaultPriority = settings.sitemap_default_priority || 0.5;
+    //const defaultPriority = settings.sitemap_default_priority || 0.5;
     const defaultChangefreq = settings.sitemap_default_changefreq || 'weekly';
 
     // Tüm sayfaları al
-    const { data: pages, error: pagesError } = await supabase
+    /*const { data: pages, error: pagesError } = await supabase
       .from('sayfalar')
       .select('slug, updated_at')
       .eq('aktif', true);
 
     if (pagesError) {
       console.error('Sayfalar alınamadı:', pagesError);
-    }
+    }*/
 
     // Tüm hizmetleri al
     const { data: services, error: servicesError } = await supabase
@@ -87,14 +87,14 @@ export async function GET() {
     });
 
     // Dinamik sayfalar
-    pages?.forEach(page => {
+   /* pages?.forEach(page => {
       xml += `  <url>
     <loc>${baseUrl}/${page.slug}</loc>
     <lastmod>${page.updated_at}</lastmod>
     <changefreq>${defaultChangefreq}</changefreq>
     <priority>${defaultPriority}</priority>
   </url>\n`;
-    });
+    });*/
 
     // Hizmet sayfaları - Yüksek öncelik
     services?.forEach(service => {

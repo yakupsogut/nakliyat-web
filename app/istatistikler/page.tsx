@@ -1,6 +1,7 @@
 import { supabase } from '@/lib/supabase';
 import IstatistikKart from './components/IstatistikKart';
-import WhatsAppButton from '../components/WhatsAppButton';
+import { createServerClient } from '@/lib/supabase';
+import { Metadata } from 'next';
 import Link from 'next/link';
 
 interface Istatistik {
@@ -9,6 +10,31 @@ interface Istatistik {
   deger: string;
   aciklama: string;
   ikon: string;
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const supabase = createServerClient();
+  
+  const { data: siteSettings } = await supabase
+    .from('site_settings')
+    .select('*')
+    .single();
+
+  return {
+    title: `İstatistikler | ${siteSettings?.site_title}`,
+    description: 'Yılların deneyimi ve güvenilirliği ile taşımacılık sektöründe öncü firma olarak hizmet veriyoruz. Başarılarımız ve performansımız hakkında detaylı istatistikler.',
+    openGraph: {
+      title: `İstatistikler | ${siteSettings?.site_title}`,
+      description: 'Yılların deneyimi ve güvenilirliği ile taşımacılık sektöründe öncü firma olarak hizmet veriyoruz.',
+      type: 'website',
+      images: siteSettings?.og_image ? [{ url: siteSettings.og_image }] : undefined
+    },
+    twitter: {
+      card: 'summary',
+      title: `İstatistikler | ${siteSettings?.site_title}`,
+      description: 'Yılların deneyimi ve güvenilirliği ile taşımacılık sektöründe öncü firma olarak hizmet veriyoruz.'
+    }
+  };
 }
 
 export default async function IstatistiklerPage() {
@@ -52,7 +78,6 @@ export default async function IstatistiklerPage() {
         </div>
       </div>
 
-      <WhatsAppButton />
     </main>
   );
 } 
