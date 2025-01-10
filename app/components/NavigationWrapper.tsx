@@ -1,24 +1,29 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import Topbar from "./Topbar";
-import Navbar from "./Navbar";
+import Navbar from './Navbar';
+import Topbar from './Topbar';
+import { MenuItem, SiteAyarlari } from '@/lib/types';
 
-export default function NavigationWrapper({ children }: { children: React.ReactNode }) {
+interface NavigationWrapperProps {
+  children: React.ReactNode;
+  siteAyarlari: SiteAyarlari;
+  menuItems: MenuItem[];
+}
+
+export default function NavigationWrapper({ children, siteAyarlari, menuItems }: NavigationWrapperProps) {
   const pathname = usePathname();
-  const isAdminPanel = pathname?.startsWith("/admin");
+  const isAdminPage = pathname?.startsWith('/admin');
+
+  if (isAdminPage) {
+    return <>{children}</>;
+  }
 
   return (
     <>
-      {!isAdminPanel && (
-        <div className="fixed w-full top-0 z-50">
-          <Topbar />
-          <Navbar />
-        </div>
-      )}
-      <div className={!isAdminPanel ? "pt-[105px]" : ""}>
-        {children}
-      </div>
+      <Topbar siteAyarlari={siteAyarlari} />
+      <Navbar menuItems={menuItems} siteAyarlari={siteAyarlari} />
+      {children}
     </>
   );
 } 
