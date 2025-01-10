@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 
 type FormData = {
   firstName: string;
@@ -47,6 +47,7 @@ export default function TeklifForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+      <Toaster position="top-right" />
       {/* Kişisel Bilgiler */}
       <div className="border-b border-gray-900/10 pb-8">
         <h3 className="text-lg font-semibold leading-7 text-gray-900">Kişisel Bilgiler</h3>

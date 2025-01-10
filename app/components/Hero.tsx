@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export default function Hero() {
   return (
-    <div className="relative isolate overflow-hidden bg-gradient-to-b from-blue-900 to-blue-800 pt-14">
+    <header className="relative isolate overflow-hidden bg-gradient-to-b from-blue-900 to-blue-800 pt-14">
       <div
         className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
         aria-hidden="true"
@@ -20,7 +20,7 @@ export default function Hero() {
       </div>
 
       <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
-        <motion.div
+        <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -36,7 +36,7 @@ export default function Hero() {
           <p className="mt-6 text-lg leading-8 text-gray-100">
             Ev ve ofis taşımacılığında 20 yıllık tecrübemizle yanınızdayız. Şehir içi ve şehirler arası nakliyat hizmetlerimizle eşyalarınız güvende.
           </p>
-          <div className="mt-10 flex items-center justify-center gap-x-6">
+          <nav className="mt-10 flex items-center justify-center gap-x-6" aria-label="Hero navigation">
             <Link
               href="/teklif-al"
               className="rounded-md bg-white px-5 py-3 text-base font-semibold text-blue-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-all duration-300"
@@ -49,8 +49,8 @@ export default function Hero() {
             >
               Hizmetlerimiz <span aria-hidden="true">→</span>
             </Link>
-          </div>
-        </motion.div>
+          </nav>
+        </motion.section>
       </div>
 
       <div
@@ -65,6 +65,6 @@ export default function Hero() {
           }}
         />
       </div>
-    </div>
+    </header>
   );
 } 

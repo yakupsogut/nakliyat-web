@@ -65,30 +65,40 @@ export default function Footer({ siteAyarlari, footerMenuGroups }: FooterProps) 
   return (
     <footer className="bg-gray-900" aria-labelledby="footer-heading">
       <h2 id="footer-heading" className="sr-only">
-        Footer
+        Site Footer
       </h2>
       <div className="mx-auto max-w-7xl px-6 pb-8 pt-16 sm:pt-24 lg:px-8 lg:pt-16">
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           <div className="space-y-8">
-            <Link href="/" className="text-2xl font-bold text-white">
+            <Link href="/" className="text-2xl font-bold text-white" aria-label="Ana Sayfaya Git">
               {siteAyarlari?.logo_text || 'NakliyatPro'}
             </Link>
             <p className="text-sm leading-6 text-gray-300">
               20 yıllık tecrübemizle Türkiye&apos;nin önde gelen nakliyat şirketlerinden biri olarak hizmetinizdeyiz.
             </p>
-            <div className="flex space-x-6">
-              {menuGroups.sosyal.map((item) => (
-                <Link key={item.name} href={item.href} className="text-gray-500 hover:text-gray-400">
-                  <span className="sr-only">{item.name}</span>
-                  <item.icon className="h-6 w-6" aria-hidden="true" />
-                </Link>
-              ))}
-            </div>
+            <nav aria-label="Sosyal Medya Bağlantıları">
+              <ul className="flex space-x-6">
+                {menuGroups.sosyal.map((item) => (
+                  <li key={item.name}>
+                    <Link 
+                      href={item.href} 
+                      className="text-gray-500 hover:text-gray-400"
+                      aria-label={`${item.name} sayfamızı ziyaret et`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <span className="sr-only">{item.name}</span>
+                      <item.icon className="h-6 w-6" aria-hidden="true" />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </div>
           <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
             <div className="md:grid md:grid-cols-2 md:gap-8">
               {footerMenuGroups.map((group) => (
-                <div key={group.id} className={group.id === footerMenuGroups[1]?.id ? "mt-10 md:mt-0" : ""}>
+                <nav key={group.id} className={group.id === footerMenuGroups[1]?.id ? "mt-10 md:mt-0" : ""} aria-label={group.baslik}>
                   <h3 className="text-sm font-semibold leading-6 text-white">{group.baslik}</h3>
                   <ul role="list" className="mt-6 space-y-4">
                     {group.menu_items?.map((item) => (
@@ -99,34 +109,41 @@ export default function Footer({ siteAyarlari, footerMenuGroups }: FooterProps) 
                       </li>
                     ))}
                   </ul>
-                </div>
+                </nav>
               ))}
             </div>
-            <div>
+            <nav aria-label="İletişim Bilgileri">
               <h3 className="text-sm font-semibold leading-6 text-white">İletişim</h3>
               <ul role="list" className="mt-6 space-y-4">
                 <li>
-                  <Link href="#" className="text-sm leading-6 text-gray-300 hover:text-white">
-                    {siteAyarlari?.adres || 'Örnek Mahallesi, Örnek Sokak No:1'}
-                  </Link>
+                  <address className="not-italic">
+                    <Link href="#" className="text-sm leading-6 text-gray-300 hover:text-white">
+                      {siteAyarlari?.adres || 'Örnek Mahallesi, Örnek Sokak No:1'}
+                    </Link>
+                    <br />
+                 
+                  </address>
                 </li>
                 <li>
-                  <Link href="#" className="text-sm leading-6 text-gray-300 hover:text-white">
-                    İstanbul, Türkiye
-                  </Link>
-                </li>
-                <li>
-                  <Link href={`tel:${siteAyarlari?.telefon}`} className="text-sm leading-6 text-gray-300 hover:text-white">
+                  <Link 
+                    href={`tel:${siteAyarlari?.telefon}`} 
+                    className="text-sm leading-6 text-gray-300 hover:text-white"
+                    aria-label="Bizi telefonla arayın"
+                  >
                     {siteAyarlari?.telefon || '+90 (212) 123 45 67'}
                   </Link>
                 </li>
                 <li>
-                  <Link href={`mailto:${siteAyarlari?.email}`} className="text-sm leading-6 text-gray-300 hover:text-white">
+                  <Link 
+                    href={`mailto:${siteAyarlari?.email}`} 
+                    className="text-sm leading-6 text-gray-300 hover:text-white"
+                    aria-label="Bize e-posta gönderin"
+                  >
                     {siteAyarlari?.email || 'info@nakliyatpro.com'}
                   </Link>
                 </li>
               </ul>
-            </div>
+            </nav>
           </div>
         </div>
         <div className="mt-16 border-t border-white/10 pt-8 sm:mt-20 lg:mt-24">

@@ -7,6 +7,12 @@ import { Metadata } from "next";
 import JsonLd from '@/app/components/JsonLd';
 import { createServerClient } from '@/lib/supabase';
 
+// Sayfa seviyesinde önbellekleme süresi (15 dakika)
+export const revalidate = 180;
+
+// Dinamik route'lar için önbellekleme davranışı
+export const dynamic = 'force-static';
+
 export async function generateMetadata({
   params,
 }: {

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 
 type FormData = {
   name: string;
@@ -42,6 +42,7 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+         <Toaster position="top-right" />
       <div>
         <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
           Ad Soyad

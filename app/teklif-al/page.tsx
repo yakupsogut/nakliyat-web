@@ -3,6 +3,13 @@ import JsonLd from '@/app/components/JsonLd';
 import TeklifForm from './components/TeklifForm';
 import { Metadata } from 'next';
 
+// Sayfa seviyesinde önbellekleme süresi (15 dakika)
+export const revalidate = 180;
+
+// Dinamik route'lar için önbellekleme davranışı
+export const dynamic = 'force-static';
+
+
 export default async function TeklifAlPage() {
   const supabase = createServerClient();
   

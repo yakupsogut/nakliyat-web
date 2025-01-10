@@ -3,6 +3,8 @@ import JsonLd from '@/app/components/JsonLd';
 import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 
+
+
 const ContactForm = dynamic(() => import('../components/ContactForm'), {
   loading: () => (
     <div className="animate-pulse bg-gray-100 h-[500px] rounded-lg" />

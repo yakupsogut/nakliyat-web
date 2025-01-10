@@ -59,6 +59,7 @@ export async function getHizmetById(id: number): Promise<Hizmet | null> {
     .from('hizmetler')
     .select('*')
     .eq('id', id)
+    .eq('aktif', true)
     .single();
 
   if (error) throw error;

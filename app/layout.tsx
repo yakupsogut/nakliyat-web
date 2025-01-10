@@ -4,6 +4,16 @@ import { generateMetadata as generateSeoMetadata } from './components/SeoMeta';
 import NavigationWrapper from './components/NavigationWrapper';
 import { Analytics } from '@/app/components/Analytics';
 import type { FooterMenuGroup, FooterMenuItem, SiteAyarlari } from '@/lib/types';
+import { Inter } from 'next/font/google';
+
+const inter = Inter({
+  subsets: ['latin', 'latin-ext'],
+  display: 'swap',
+  preload: true,
+  fallback: ['system-ui', 'arial', 'sans-serif'],
+  adjustFontFallback: true,
+  variable: '--font-inter',
+});
 
 export async function generateMetadata() {
   const supabase = createServerClient();
@@ -82,7 +92,7 @@ export default async function RootLayout({
   } as SiteAyarlari;
 
   return (
-    <html lang="tr">
+    <html lang="tr" className={inter.variable}>
       
       <body>
         <NavigationWrapper

@@ -30,7 +30,7 @@ export default function Testimonials() {
 
   if (isLoading) {
     return (
-      <div className="bg-white py-24 sm:py-32">
+      <section className="bg-white py-24 sm:py-32" aria-label="Müşteri Yorumları">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
@@ -38,26 +38,26 @@ export default function Testimonials() {
             </h2>
           </div>
         </div>
-      </div>
+      </section>
     );
   }
 
   return (
-    <div className="bg-white py-24 sm:py-32">
+    <section className="bg-white py-24 sm:py-32" aria-label="Müşteri Yorumları">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
+        <header className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
             Müşterilerimiz Ne Diyor?
           </h2>
           <p className="mt-6 text-lg leading-8 text-gray-600">
             Profesyonel hizmet kalitemiz ve müşteri memnuniyetimiz ile fark yaratıyoruz.
           </p>
-        </div>
+        </header>
         <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mt-20 lg:max-w-none lg:grid-cols-3">
           {referanslar.map((referans) => (
             <article key={referans.id} className="flex flex-col items-start justify-between bg-white p-6 shadow-lg rounded-lg">
               <div className="flex items-center gap-x-4 text-xs">
-                <div className="flex items-center">
+                <div className="flex items-center" role="img" aria-label={`${referans.puan} yıldız puan`}>
                   {[0, 1, 2, 3, 4].map((rating) => (
                     <StarIcon
                       key={rating}
@@ -70,24 +70,24 @@ export default function Testimonials() {
                   ))}
                 </div>
               </div>
-              <div className="group relative">
+              <blockquote className="group relative">
                 <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">
                   {referans.yorum}
                 </p>
-              </div>
-              <div className="relative mt-8">
+              </blockquote>
+              <footer className="relative mt-8">
                 <div className="flex items-center gap-x-4">
-                  <div className="text-sm leading-6">
+                  <cite className="text-sm leading-6 not-italic">
                     <p className="font-semibold text-gray-900">
                       {referans.musteri_adi}
                     </p>
-                  </div>
+                  </cite>
                 </div>
-              </div>
+              </footer>
             </article>
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 } 

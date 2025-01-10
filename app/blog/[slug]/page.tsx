@@ -8,6 +8,12 @@ import Image from 'next/image';
 import BlogIcerik from './components/BlogIcerik';
 import BlogPaylas from './components/BlogPaylas';
 
+// Sayfa seviyesinde önbellekleme süresi (15 dakika)
+export const revalidate = 180;
+
+// Dinamik route'lar için önbellekleme davranışı
+export const dynamic = 'force-static';
+
 // Okuma süresini hesaplayan yardımcı fonksiyon
 function getReadingTime(content: string): number {
   const wordsPerMinute = 200;
