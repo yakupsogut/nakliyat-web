@@ -92,4 +92,25 @@ export interface MenuItem {
   sira: number;
   parent_id: string | null;
   aktif: boolean;
+}
+
+export type FooterMenuGroup = {
+    id: string
+    baslik: string
+    sira: number
+    aktif: boolean
+    created_at: string
+    updated_at: string
+    menu_items?: FooterMenuItem[]
+}
+
+export type FooterMenuItem = {
+    id: string
+    baslik: string
+    link: string
+    sira: number
+    group_id: string
+    aktif: boolean
+    created_at: string
+    updated_at: string
 } 

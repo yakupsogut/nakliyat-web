@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FiSettings, FiUsers, FiFileText, FiHelpCircle, FiImage, FiMenu, FiMessageSquare, FiBarChart2, FiGrid } from "react-icons/fi";
+import { FiSettings, FiUsers, FiFileText, FiHelpCircle, FiImage, FiMenu, FiMessageSquare, FiBarChart2, FiGrid, FiList } from "react-icons/fi";
 
 interface AdminUser {
   id: string;
@@ -29,6 +29,12 @@ export default function AdminSidebar({ user }: Props) {
       name: "Menü Yönetimi",
       href: "/admin/menu",
       icon: FiMenu,
+      role: ['admin']
+    },
+    {
+      name: "Footer Menü",
+      href: "/admin/footer-menu",
+      icon: FiList,
       role: ['admin']
     },
     {
