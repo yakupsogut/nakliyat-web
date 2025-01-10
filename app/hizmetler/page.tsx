@@ -1,6 +1,5 @@
 import { getAktifHizmetler } from '@/lib/db';
 import { convertSupabaseImageUrl } from '@/lib/utils';
-import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -11,7 +10,7 @@ export default async function HizmetlerPage() {
   return (
     <main className="min-h-screen bg-white">
       
-      <div className="py-24 sm:py-32">
+      <div className="py-16 sm:py-16">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
@@ -66,7 +65,6 @@ export default async function HizmetlerPage() {
       </div>
 
       <WhatsAppButton />
-      <Footer />
     </main>
   );
 } 

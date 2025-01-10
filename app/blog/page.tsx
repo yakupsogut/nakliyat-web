@@ -1,6 +1,5 @@
 import { supabase } from '@/lib/supabase';
 import { convertSupabaseImageUrl } from '@/lib/utils';
-import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -81,7 +80,6 @@ export default async function BlogPage() {
       </div>
 
       <WhatsAppButton />
-      <Footer />
     </main>
   );
 } 

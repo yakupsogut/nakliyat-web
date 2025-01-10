@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import type { SiteAyarlari } from "@/lib/types";
 import { toast } from "react-hot-toast";
+import Image from "next/image";
 
 export default function SiteAyarlariPage() {
   const [ayarlar, setAyarlar] = useState<SiteAyarlari | null>(null);
@@ -98,9 +99,11 @@ export default function SiteAyarlariPage() {
                   <div className="mt-1 sm:mt-0 sm:col-span-2">
                     {ayarlar.logo_url && (
                       <div className="mb-4">
-                        <img
+                        <Image
                           src={ayarlar.logo_url}
                           alt="Mevcut Logo"
+                          width={80}
+                          height={80}
                           className="h-20 object-contain bg-white rounded p-2"
                         />
                       </div>

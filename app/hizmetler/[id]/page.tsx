@@ -1,7 +1,6 @@
 import { getHizmetById } from '@/lib/db';
 import type { Hizmet } from '@/lib/types';
 import { convertSupabaseImageUrl } from '@/lib/utils';
-import Footer from '../../components/Footer';
 import WhatsAppButton from '../../components/WhatsAppButton';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -30,7 +29,7 @@ export default async function HizmetDetay({
   if (!hizmet) {
     return (
       <main className="min-h-screen bg-white">
-        <div className="py-24 sm:py-32">
+        <div className="py-5 sm:py-5">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="text-center">
               <h1 className="text-3xl font-bold text-gray-900">
@@ -50,7 +49,6 @@ export default async function HizmetDetay({
             </div>
           </div>
         </div>
-        <Footer />
       </main>
     );
   }
@@ -58,7 +56,7 @@ export default async function HizmetDetay({
   return (
     <main className="min-h-screen bg-white">
 
-      <div className="py-24 sm:py-32">
+      <div className="py-5 sm:py-5">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-3xl">
             <Link
@@ -147,7 +145,6 @@ export default async function HizmetDetay({
       </div>
 
       <WhatsAppButton />
-      <Footer />
     </main>
   );
 } 

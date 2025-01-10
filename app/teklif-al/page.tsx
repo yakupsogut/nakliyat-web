@@ -1,12 +1,11 @@
 import WhatsAppButton from '../components/WhatsAppButton';
-import Footer from '../components/Footer';
 import TeklifForm from './components/TeklifForm';
 
 export default function QuoteRequest() {
   return (
     <main className="min-h-screen bg-white">
       
-      <div className="py-24 sm:py-32">
+      <div className="py-10 sm:py-10">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Teklif Al</h2>
@@ -22,7 +21,6 @@ export default function QuoteRequest() {
       </div>
 
       <WhatsAppButton />
-      <Footer />
     </main>
   );
 } 

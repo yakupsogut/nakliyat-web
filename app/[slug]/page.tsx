@@ -2,7 +2,6 @@ import { createServerClient } from '@/lib/supabase'
 import { Sayfa } from '@/lib/types'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import Footer from '../components/Footer'
 import WhatsAppButton from '../components/WhatsAppButton'
 import { convertSupabaseImageUrl } from '@/lib/utils'
 
@@ -65,7 +64,7 @@ export default async function DynamicPage({ params }: { params: Promise<{ slug: 
   return (
     <main className="min-h-screen bg-white text-gray-900">
      
-      <div className="relative isolate overflow-hidden bg-white py-24 sm:py-32">
+      <div className="relative isolate overflow-hidden bg-white py-5 sm:py-5">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:mx-0">
             <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
@@ -80,7 +79,6 @@ export default async function DynamicPage({ params }: { params: Promise<{ slug: 
         </div>
       </div>
       <WhatsAppButton />
-      <Footer />
     </main>
   )
 } 

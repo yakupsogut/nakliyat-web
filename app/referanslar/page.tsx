@@ -1,6 +1,5 @@
 import { getReferanslar } from '@/lib/db';
 import { StarIcon } from '@heroicons/react/20/solid';
-import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
 import Link from 'next/link';
 
@@ -14,7 +13,7 @@ export default async function ReferanslarPage() {
   return (
     <main className="min-h-screen bg-gray-50">
       
-      <div className="py-24 sm:py-32">
+      <div className="py-10 sm:py-10">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
@@ -81,7 +80,6 @@ export default async function ReferanslarPage() {
       </div>
 
       <WhatsAppButton />
-      <Footer />
     </main>
   );
 } 

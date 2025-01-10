@@ -1,5 +1,4 @@
 import { supabase } from '@/lib/supabase';
-import Footer from '../../components/Footer';
 import WhatsAppButton from '../../components/WhatsAppButton';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -31,7 +30,7 @@ export default async function BlogDetay({
     return (
       <main className="min-h-screen bg-white">
        
-        <div className="py-24 sm:py-32">
+        <div className="py-5 sm:py-5">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="text-center">
               <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
@@ -48,7 +47,6 @@ export default async function BlogDetay({
             </div>
           </div>
         </div>
-        <Footer />
       </main>
     );
   }
@@ -78,7 +76,7 @@ export default async function BlogDetay({
     <main className="min-h-screen bg-white">
     
       
-      <article className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-8">
+      <article className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           {/* Ana İçerik */}
           <div className="lg:col-span-8">
@@ -209,7 +207,6 @@ export default async function BlogDetay({
       </article>
 
       <WhatsAppButton />
-      <Footer />
     </main>
   );
 } 
