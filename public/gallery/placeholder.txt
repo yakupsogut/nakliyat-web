@@ -1,0 +1,14 @@
+Bu dizinde aşağıdaki resimler olmalıdır:
+
+1. home-moving.jpg - Ev taşıma görseli
+2. office-moving.jpg - Ofis taşıma görseli
+3. packing.jpg - Paketleme görseli
+4. storage.jpg - Depolama görseli
+5. interstate-moving.jpg - Şehirler arası nakliyat görseli
+6. international-moving.jpg - Uluslararası nakliyat görseli
+7. special-items.jpg - Özel eşya taşıma görseli
+8. vehicle-transport.jpg - Araç taşıma görseli
+9. elevator-moving.jpg - Asansörlü taşıma görseli
+
+Not: Tüm görseller yüksek kaliteli, profesyonel nakliyat fotoğrafları olmalıdır.
+Önerilen boyutlar: 800x600px veya 1200x800px 

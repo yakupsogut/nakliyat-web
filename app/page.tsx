@@ -23,6 +23,12 @@ const Testimonials = dynamicImport(() => import('./components/Testimonials'), {
   )
 });
 
+const HomeGallery = dynamicImport(() => import('./components/HomeGallery'), {
+  loading: () => (
+    <div className="animate-pulse bg-gray-100 h-[600px]" />
+  )
+});
+
 export async function generateMetadata(): Promise<Metadata> {
   const supabase = createServerClient();
   
@@ -106,6 +112,7 @@ export default async function Home() {
       <JsonLd data={websiteSchema} />
       <Hero />
       <Services />
+      <HomeGallery />
       <Testimonials />
     </main>
   );
