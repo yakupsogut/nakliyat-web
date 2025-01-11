@@ -3,12 +3,14 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import {
-  ChartBarIcon,
   TruckIcon,
   UserGroupIcon,
   ChatBubbleLeftIcon,
   DocumentTextIcon,
 } from "@heroicons/react/24/outline";
+import MonthlyStatsChart from "@/app/components/admin/MonthlyStatsChart";
+import VisitorStatsChart from "@/app/components/admin/VisitorStatsChart";
+import PerformanceMetricsChart from "@/app/components/admin/PerformanceMetricsChart";
 
 interface Stats {
   name: string;
@@ -143,17 +145,19 @@ export default function DashboardPage() {
       {/* Grafikler */}
       <div className="mt-8 grid grid-cols-1 gap-5 lg:grid-cols-2">
         {/* Aylık İstatistikler */}
-        <div className="rounded-lg bg-gray-800 p-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-medium text-white">Aylık İstatistikler</h2>
-            <ChartBarIcon className="h-6 w-6 text-gray-400" />
-          </div>
-          <div className="mt-6 h-[200px] flex items-center justify-center text-gray-400">
-            Grafik buraya gelecek
-          </div>
-        </div>
+        <MonthlyStatsChart />
 
-        {/* Son Aktiviteler */}
+        {/* Site Ziyaretçileri */}
+        <VisitorStatsChart />
+      </div>
+
+      {/* Performans Metrikleri */}
+      <div className="mt-8">
+        <PerformanceMetricsChart />
+      </div>
+
+      {/* Son Aktiviteler */}
+      <div className="mt-5">
         <div className="rounded-lg bg-gray-800 p-6">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-medium text-white">Son Aktiviteler</h2>

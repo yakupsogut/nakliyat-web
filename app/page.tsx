@@ -1,21 +1,27 @@
 import { createServerClient } from '@/lib/supabase';
 import JsonLd from './components/JsonLd';
 import { Metadata } from 'next';
-import dynamic from 'next/dynamic';
+import { default as dynamicImport } from 'next/dynamic';
 
-const Hero = dynamic(() => import('./components/Hero'), {
+// Sayfa seviyesinde önbellekleme süresi (15 dakika)
+export const revalidate = 180;
+
+// Dinamik route'lar için önbellekleme davranışı
+export const dynamic = 'force-static';
+
+const Hero = dynamicImport(() => import('./components/Hero'), {
   loading: () => (
     <div className="animate-pulse bg-gray-200 h-[600px]" />
   )
 });
 
-const Services = dynamic(() => import('./components/Services'), {
+const Services = dynamicImport(() => import('./components/Services'), {
   loading: () => (
     <div className="animate-pulse bg-gray-100 h-[800px]" />
   )
 });
 
-const Testimonials = dynamic(() => import('./components/Testimonials'), {
+const Testimonials = dynamicImport(() => import('./components/Testimonials'), {
   loading: () => (
     <div className="animate-pulse bg-gray-50 h-[600px]" />
   )
