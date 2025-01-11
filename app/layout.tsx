@@ -16,10 +16,10 @@ const inter = Inter({
 });
 
 // Tüm sayfalar için önbellekleme süresi (3 saat)
-export const revalidate = 10800;
+//export const revalidate = 10800;
 
 // Tüm sayfalar için önbellekleme davranışı
-export const dynamic = 'force-static';
+//export const dynamic = 'force-static';
 
 export async function generateMetadata() {
   const supabase = createServerClient();

@@ -5,10 +5,10 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 
 // Sayfa seviyesinde önbellekleme süresi (15 dakika)
-export const revalidate = 180;
+//export const revalidate = 180;
 
 // Dinamik route'lar için önbellekleme davranışı
-export const dynamic = 'force-static';
+//export const dynamic = 'force-static';
 
 
 interface Istatistik {

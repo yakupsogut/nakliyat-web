@@ -1,46 +1,12 @@
-'use client';
-
-import { useEffect, useState } from 'react';
 import { getReferanslar } from '@/lib/db';
-import type { Referans } from '@/lib/types';
 import { StarIcon } from '@heroicons/react/20/solid';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function Testimonials() {
-  const [referanslar, setReferanslar] = useState<Referans[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchReferanslar = async () => {
-      try {
-        const data = await getReferanslar(6);
-        setReferanslar(data);
-      } catch (error) {
-        console.error('Referanslar yüklenirken hata:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchReferanslar();
-  }, []);
-
-  if (isLoading) {
-    return (
-      <section className="bg-white py-24 sm:py-32" aria-label="Müşteri Yorumları">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Referanslar Yükleniyor...
-            </h2>
-          </div>
-        </div>
-      </section>
-    );
-  }
+export default async function Testimonials() {
+  const referanslar = await getReferanslar(6);
 
   return (
     <section className="bg-white py-24 sm:py-32" aria-label="Müşteri Yorumları">

@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabase";
 import { PencilIcon, TrashIcon, PlusIcon, Bars3Icon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import ConfirmModal from "@/app/components/ConfirmModal";
+import { revalidateAfterBlogUpdate } from "@/lib/revalidate";
 
 interface BlogPost {
   id: number;
@@ -63,6 +64,10 @@ export default function AdminBlog() {
         .eq('id', id);
 
       if (error) throw error;
+      
+      // Blog sayfasını revalidate et
+      await revalidateAfterBlogUpdate();
+      
       setPosts(posts.filter(post => post.id !== id));
       setDeleteModal({ isOpen: false, postId: null, postTitle: "" });
     } catch (error) {
@@ -86,6 +91,10 @@ export default function AdminBlog() {
         .eq('id', id);
 
       if (error) throw error;
+
+      // Blog sayfasını revalidate et
+      await revalidateAfterBlogUpdate();
+      
       setPosts(posts.map(post => 
         post.id === id ? { ...post, aktif: !currentStatus } : post
       ));
@@ -147,6 +156,9 @@ export default function AdminBlog() {
 
         if (error) throw error;
       }
+
+      // Blog sayfasını revalidate et
+      await revalidateAfterBlogUpdate();
 
       // State'i güncelle
       setPosts(updates.sort((a, b) => a.siralama - b.siralama));

@@ -38,7 +38,7 @@ export default async function BlogPage() {
     .from('blog')
     .select('*')
     .eq('aktif', true)
-    .order('created_at', { ascending: false });
+    .order('siralama', { ascending: true });
 
   // Site ayarlarını al
   const { data: siteSettings } = await supabase

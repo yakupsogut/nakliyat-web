@@ -3,11 +3,7 @@ import JsonLd from './components/JsonLd';
 import { Metadata } from 'next';
 import { default as dynamicImport } from 'next/dynamic';
 
-// Sayfa seviyesinde önbellekleme süresi (15 dakika)
-export const revalidate = 180;
 
-// Dinamik route'lar için önbellekleme davranışı
-export const dynamic = 'force-static';
 
 const Hero = dynamicImport(() => import('./components/Hero'), {
   loading: () => (

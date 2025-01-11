@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { Editor } from "@tinymce/tinymce-react";
 import Image from "next/image";
+import { revalidateAfterBlogUpdate } from "@/lib/revalidate";
 
 interface BlogPost {
   id: number;
@@ -110,6 +111,11 @@ export default function BlogDuzenle({ params }: { params: Promise<{ id: string }
         .eq("id", post.id);
 
       if (error) throw error;
+
+      // Blog sayfasını revalidate et
+      await revalidateAfterBlogUpdate();
+      await revalidateAfterBlogUpdate(post.slug);
+
       router.push("/admin/blog");
     } catch (error) {
       console.error("Error updating post:", error);

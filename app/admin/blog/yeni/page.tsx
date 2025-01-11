@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { Editor } from "@tinymce/tinymce-react";
 import Image from "next/image";
+import { revalidateAfterBlogUpdate } from "@/lib/revalidate";
 
 export default function YeniBlogYazisi() {
   const router = useRouter();
@@ -83,6 +84,9 @@ export default function YeniBlogYazisi() {
         ]);
 
       if (error) throw error;
+
+      // Blog sayfasını revalidate et
+      await revalidateAfterBlogUpdate();
 
       router.push('/admin/blog');
       router.refresh();

@@ -1,43 +1,9 @@
-'use client';
-
-import { useEffect, useState } from 'react';
 import { getAktifHizmetler } from '@/lib/db';
-import type { Hizmet } from '@/lib/types';
 import { convertSupabaseImageUrl } from '@/lib/utils';
 import Image from 'next/image';
 
-export default function Services() {
-  const [hizmetler, setHizmetler] = useState<Hizmet[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchHizmetler = async () => {
-      try {
-        const data = await getAktifHizmetler();
-        setHizmetler(data);
-      } catch (error) {
-        console.error('Hizmetler yüklenirken hata:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchHizmetler();
-  }, []);
-
-  if (isLoading) {
-    return (
-      <section className="py-24 sm:py-32 bg-gray-900" aria-label="Hizmetlerimiz">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              Hizmetlerimiz Yükleniyor...
-            </h2>
-          </div>
-        </div>
-      </section>
-    );
-  }
+export default async function Services() {
+  const hizmetler = await getAktifHizmetler();
 
   return (
     <section className="py-24 sm:py-32 bg-gray-900" aria-label="Hizmetlerimiz">
