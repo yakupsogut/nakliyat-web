@@ -5,6 +5,12 @@ import { notFound } from 'next/navigation'
 import { convertSupabaseImageUrl } from '@/lib/utils'
 import JsonLd from '@/app/components/JsonLd'
 
+// Sayfa seviyesinde önbellekleme süresi (15 dakika)
+export const revalidate = 180;
+
+// Dinamik route'lar için önbellekleme davranışı
+export const dynamic = 'force-static';
+
 export async function generateMetadata(
   { params }: { params: Promise<{ slug: string }> }
 ): Promise<Metadata> {
