@@ -79,7 +79,7 @@ async function processCommand(data: TelegramUpdate) {
 
   // Yetkili chat ID kontrolü
   if (!await isAuthorizedChat(chatId)) {
-    console.log('Yetkisiz chat ID:', chatId);
+    console.log('Yetkisiz chat ID: ', chatId);
     return;
   }
 
