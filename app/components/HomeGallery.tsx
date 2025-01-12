@@ -23,7 +23,7 @@ const galleryItems = [
     {
         id: 4,
         title: 'Depolama',
-        image: 'https://images.unsplash.com/photo-1600573472591-ee6c563aabc0',
+        image: 'https://images.unsplash.com/photo-1719937206341-38a6392dfdef',
         order: 4
     },
     {

@@ -139,7 +139,7 @@ INSERT INTO hizmetler (baslik, aciklama, resim_url, aktif, siralama, ozellikler)
 (
   'Depolama Hizmetleri',
   'Güvenli ve modern depolama tesislerimizde eşyalarınızı istediğiniz süre boyunca muhafaza ediyoruz. Kısa ve uzun dönem depolama çözümleri sunuyoruz.',
-  'https://images.unsplash.com/photo-1586528116493-d654c66d18b7?auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1719937206341-38a6392dfdef?auto=format&fit=crop&q=80',
   true,
   5,
   ARRAY[

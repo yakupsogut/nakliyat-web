@@ -86,7 +86,7 @@ Sigorta
 - Depolama süresince sigorta yaptırın
 - Poliçe kapsamını detaylı inceleyin
 - Değerli eşyaları ayrıca bildirin',
-  'https://images.unsplash.com/photo-1586528116493-d654c66d18b7?auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1719937206341-38a6392dfdef?auto=format&fit=crop&q=80',
   'Ayşe Demir',
   'Depolama',
   ARRAY['depolama', 'eşya depolama', 'güvenli depolama'],
