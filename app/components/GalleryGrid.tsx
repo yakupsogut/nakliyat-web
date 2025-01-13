@@ -5,11 +5,11 @@ import { useState } from 'react';
 import ImageModal from './ImageModal';
 
 interface GalleryItem {
-    id: number;
+    id: string;
     title: string;
-    image: string;
+    image_url: string;
     description?: string;
-    order: number;
+    order_no: number;
 }
 
 interface GalleryGridProps {
@@ -29,19 +29,19 @@ const GalleryGrid = ({ items, limit }: GalleryGridProps) => {
     return (
         <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {displayItems.sort((a, b) => a.order - b.order).map((item) => (
+                {displayItems.sort((a, b) => a.order_no - b.order_no).map((item) => (
                     <div 
                         key={item.id} 
                         className="group bg-white rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl cursor-pointer"
                         onClick={() => setSelectedImage({
-                            image: item.image,
+                            image: item.image_url,
                             title: item.title,
                             description: item.description
                         })}
                     >
                         <div className="relative h-72">
                             <Image
-                                src={item.image}
+                                src={item.image_url}
                                 alt={item.title}
                                 fill
                                 className="object-cover transition-transform duration-300 group-hover:scale-105"

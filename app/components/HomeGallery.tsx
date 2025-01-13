@@ -1,46 +1,23 @@
 import Link from 'next/link';
 import GalleryGrid from './GalleryGrid';
 
-const galleryItems = [
-    {
-        id: 1,
-        title: 'Ev Taşıma',
-        image: 'https://images.unsplash.com/photo-1600518464441-9154a4dea21b',
-        order: 1
-    },
-    {
-        id: 2,
-        title: 'Ofis Taşıma',
-        image: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d',
-        order: 2
-    },
-    {
-        id: 3,
-        title: 'Paketleme',
-        image: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f',
-        order: 3
-    },
-    {
-        id: 4,
-        title: 'Depolama',
-        image: 'https://images.unsplash.com/photo-1719937206341-38a6392dfdef',
-        order: 4
-    },
-    {
-        id: 5,
-        title: 'Şehirler Arası Nakliyat',
-        image: 'https://images.unsplash.com/photo-1586864387789-628af9feed72',
-        order: 5
-    },
-    {
-        id: 6,
-        title: 'Uluslararası Nakliyat',
-        image: 'https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3',
-        order: 6
+async function getGalleryItems() {
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
+        
+    const res = await fetch(`${baseUrl}/api/gallery`, {
+        cache: 'no-store'
+    });
+    
+    if (!res.ok) {
+        throw new Error('Galeri verileri alınamadı');
     }
-];
+    
+    return res.json();
+}
 
-const HomeGallery = () => {
+const HomeGallery = async () => {
+    const galleryItems = await getGalleryItems();
+
     return (
         <section className="py-12 bg-gray-50">
             <div className="container mx-auto px-4">
