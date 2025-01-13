@@ -115,6 +115,7 @@ export default async function Home() {
       <JsonLd data={organizationSchema} />
       <JsonLd data={websiteSchema} />
       <Hero />
+      test deneme
       <Services />
       <HomeGallery />
       <Testimonials />
