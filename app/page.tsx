@@ -9,11 +9,11 @@ export const revalidate = 180;
 // Dinamik route'lar için önbellekleme davranışı
 export const dynamic = 'force-static';
 
-/*const Hero = dynamicImport(() => import('./components/Hero'), {
+const Hero = dynamicImport(() => import('./components/Hero'), {
   loading: () => (
     <div className="animate-pulse bg-gray-200 h-[600px]" />
   )
-});*/
+});
 
 const Services = dynamicImport(() => import('./components/Services'), {
   loading: () => (
@@ -114,7 +114,7 @@ export default async function Home() {
     <main className="min-h-screen">
       <JsonLd data={organizationSchema} />
       <JsonLd data={websiteSchema} />
-    
+      <Hero />
       <Services />
       <HomeGallery />
       <Testimonials />
