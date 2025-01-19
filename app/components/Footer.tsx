@@ -74,7 +74,7 @@ export default function Footer({ siteAyarlari, footerMenuGroups }: FooterProps) 
               {siteAyarlari?.logo_text || 'NakliyatPro'}
             </Link>
             <p className="text-sm leading-6 text-gray-300">
-              20 yıllık tecrübemizle Türkiye&apos;nin önde gelen nakliyat şirketlerinden biri olarak hizmetinizdeyiz.
+            {siteAyarlari?.site_description || '20 yıllık tecrübemizle Türkiye&apos;nin önde gelen nakliyat şirketlerinden biri olarak hizmetinizdeyiz.'}
             </p>
             <nav aria-label="Sosyal Medya Bağlantıları">
               <ul className="flex space-x-6">
