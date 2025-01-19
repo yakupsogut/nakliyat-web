@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { IconType } from 'react-icons';
-import { FiSettings, FiFileText, FiHelpCircle, FiMessageSquare, FiBarChart2, FiGrid, FiStar, FiSend, FiTruck, FiMenu, FiList, FiHome } from "react-icons/fi";
+import { FiSettings, FiFileText, FiHelpCircle, FiMessageSquare, FiBarChart2, FiGrid, FiStar, FiSend, FiTruck, FiMenu, FiList, FiHome, FiPackage } from "react-icons/fi";
 import Image from "next/image";
 
 interface AdminUser {
@@ -39,6 +39,12 @@ export default function AdminSidebar({ user }: Props) {
       name: "Hizmetler",
       href: "/admin/hizmetler",
       icon: FiTruck,
+      role: ['admin', 'editor']
+    },
+    {
+      name: "Özellikler",
+      href: "/admin/features",
+      icon: FiPackage,
       role: ['admin', 'editor']
     },
     {

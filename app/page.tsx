@@ -3,6 +3,7 @@ import JsonLd from './components/JsonLd';
 import { Metadata } from 'next';
 import { default as dynamicImport } from 'next/dynamic';
 import HeroSlider from './components/HeroSlider';
+import Features from './components/Features';
 
 
 // Sayfa seviyesinde önbellekleme süresi (15 dakika)
@@ -107,7 +108,8 @@ export default async function Home() {
       <JsonLd data={organizationSchema} />
       <JsonLd data={websiteSchema} />
       <HeroSlider />
-        <Services />
+      <Features />
+      <Services />
       <Testimonials />
     </main>
   );
