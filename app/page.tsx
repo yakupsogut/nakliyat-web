@@ -2,18 +2,14 @@ import { createServerClient } from '@/lib/supabase';
 import JsonLd from './components/JsonLd';
 import { Metadata } from 'next';
 import { default as dynamicImport } from 'next/dynamic';
+import HeroSlider from './components/HeroSlider';
+
 
 // Sayfa seviyesinde önbellekleme süresi (15 dakika)
 export const revalidate = 180;
 
 // Dinamik route'lar için önbellekleme davranışı
 export const dynamic = 'force-static';
-
-const Hero = dynamicImport(() => import('./components/Hero'), {
-  loading: () => (
-    <div className="animate-pulse bg-gray-200 h-[600px]" />
-  )
-});
 
 const Services = dynamicImport(() => import('./components/Services'), {
   loading: () => (
@@ -24,12 +20,6 @@ const Services = dynamicImport(() => import('./components/Services'), {
 const Testimonials = dynamicImport(() => import('./components/Testimonials'), {
   loading: () => (
     <div className="animate-pulse bg-gray-50 h-[600px]" />
-  )
-});
-
-const HomeGallery = dynamicImport(() => import('./components/HomeGallery'), {
-  loading: () => (
-    <div className="animate-pulse bg-gray-100 h-[600px]" />
   )
 });
 
@@ -110,13 +100,14 @@ export default async function Home() {
     }
   };
 
+  
+
   return (
     <main className="min-h-screen">
       <JsonLd data={organizationSchema} />
       <JsonLd data={websiteSchema} />
-      <Hero />
-      <Services />
-      <HomeGallery />
+      <HeroSlider />
+        <Services />
       <Testimonials />
     </main>
   );
