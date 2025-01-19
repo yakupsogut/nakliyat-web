@@ -10,7 +10,13 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "dev:batmanasansornakliyat": "copy .env.batmanasansornakliyat .env.local && next dev",
+    "dev:normal": "copy .env.normal .env.local && next dev",
+    "build:batmanasansornakliyat": "copy .env.batmanasansornakliyat .env.local && next build",
+    "build:normal": "copy .env.normal .env.local && next build",
+    "start:batmanasansornakliyat": "copy .env.batmanasansornakliyat .env.local && next start",
+    "start:normal": "copy .env.normal .env.local && next start"
   },
   "packageManager": "npm@10.8.2",
   "dependencies": {
