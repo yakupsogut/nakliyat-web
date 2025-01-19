@@ -74,7 +74,7 @@ export default function Footer({ siteAyarlari, footerMenuGroups }: FooterProps) 
               {siteAyarlari?.logo_text || 'NakliyatPro'}
             </Link>
             <p className="text-sm leading-6 text-gray-300">
-            {siteAyarlari?.site_description || '20 yıllık tecrübemizle Türkiye&apos;nin önde gelen nakliyat şirketlerinden biri olarak hizmetinizdeyiz.'}
+              {siteAyarlari?.site_description || '20 yıllık tecrübemizle Türkiye&apos;nin önde gelen nakliyat şirketlerinden biri olarak hizmetinizdeyiz.'}
             </p>
             <nav aria-label="Sosyal Medya Bağlantıları">
               <ul className="flex space-x-6">
@@ -95,10 +95,10 @@ export default function Footer({ siteAyarlari, footerMenuGroups }: FooterProps) 
               </ul>
             </nav>
           </div>
-          <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
-            <div className="md:grid md:grid-cols-2 md:gap-8">
+          <div className="mt-16 xl:col-span-2 xl:mt-0">
+            <div className="grid grid-cols-2 gap-8 md:grid-cols-3 md:gap-8">
               {footerMenuGroups.map((group) => (
-                <nav key={group.id} className={group.id === footerMenuGroups[1]?.id ? "mt-10 md:mt-0" : ""} aria-label={group.baslik}>
+                <nav key={group.id} className={group.id === footerMenuGroups[1]?.id ? "mt-0" : ""} aria-label={group.baslik}>
                   <h3 className="text-sm font-semibold leading-6 text-white">{group.baslik}</h3>
                   <ul role="list" className="mt-6 space-y-4">
                     {group.menu_items?.map((item) => (
@@ -111,39 +111,37 @@ export default function Footer({ siteAyarlari, footerMenuGroups }: FooterProps) 
                   </ul>
                 </nav>
               ))}
-            </div>
-            <nav aria-label="İletişim Bilgileri">
-              <h3 className="text-sm font-semibold leading-6 text-white">İletişim</h3>
-              <ul role="list" className="mt-6 space-y-4">
-                <li>
-                  <address className="not-italic">
-                    <Link href="#" className="text-sm leading-6 text-gray-300 hover:text-white">
-                      {siteAyarlari?.adres || 'Örnek Mahallesi, Örnek Sokak No:1'}
+              <nav aria-label="İletişim Bilgileri" className="col-span-2 mt-10 md:col-span-1 md:mt-0">
+                <h3 className="text-sm font-semibold leading-6 text-white">İletişim</h3>
+                <ul role="list" className="mt-6 space-y-4">
+                  <li>
+                    <address className="not-italic">
+                      <Link href="#" className="text-sm leading-6 text-gray-300 hover:text-white">
+                        {siteAyarlari?.adres || 'Örnek Mahallesi, Örnek Sokak No:1'}
+                      </Link>
+                    </address>
+                  </li>
+                  <li>
+                    <Link 
+                      href={`tel:${siteAyarlari?.telefon}`} 
+                      className="text-sm leading-6 text-gray-300 hover:text-white"
+                      aria-label="Bizi telefonla arayın"
+                    >
+                      {siteAyarlari?.telefon || '+90 (212) 123 45 67'}
                     </Link>
-                    <br />
-                 
-                  </address>
-                </li>
-                <li>
-                  <Link 
-                    href={`tel:${siteAyarlari?.telefon}`} 
-                    className="text-sm leading-6 text-gray-300 hover:text-white"
-                    aria-label="Bizi telefonla arayın"
-                  >
-                    {siteAyarlari?.telefon || '+90 (212) 123 45 67'}
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    href={`mailto:${siteAyarlari?.email}`} 
-                    className="text-sm leading-6 text-gray-300 hover:text-white"
-                    aria-label="Bize e-posta gönderin"
-                  >
-                    {siteAyarlari?.email || 'info@nakliyatpro.com'}
-                  </Link>
-                </li>
-              </ul>
-            </nav>
+                  </li>
+                  <li>
+                    <Link 
+                      href={`mailto:${siteAyarlari?.email}`} 
+                      className="text-sm leading-6 text-gray-300 hover:text-white break-all"
+                      aria-label="Bize e-posta gönderin"
+                    >
+                      {siteAyarlari?.email || 'info@nakliyatpro.com'}
+                    </Link>
+                  </li>
+                </ul>
+              </nav>
+            </div>
           </div>
         </div>
         <div className="mt-16 border-t border-white/10 pt-8 sm:mt-20 lg:mt-24">
