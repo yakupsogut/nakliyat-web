@@ -1,13 +1,48 @@
-import { getReferanslar } from '@/lib/db';
+'use client';
+
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Autoplay } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
 import { StarIcon } from '@heroicons/react/20/solid';
+import { FaQuoteRight } from 'react-icons/fa';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default async function Testimonials() {
-  const referanslar = await getReferanslar(6);
+const testimonials = [
+  {
+    id: 1,
+    musteri_adi: "Ahmet Yılmaz",
+    konum: "İstanbul",
+    yorum: "Eşyalarımız büyük bir özenle taşındı. Profesyonel ekip ve hızlı hizmet için teşekkürler.",
+    puan: 5
+  },
+  {
+    id: 2,
+    musteri_adi: "Ayşe Kaya",
+    konum: "Ankara",
+    yorum: "Çok memnun kaldık. Tüm eşyalarımız güvenle yeni evimize ulaştı.",
+    puan: 5
+  },
+  {
+    id: 3,
+    musteri_adi: "Mehmet Demir",
+    konum: "İzmir",
+    yorum: "Taşınma sürecinde gösterdikleri özen ve profesyonellik için teşekkür ederim.",
+    puan: 5
+  },
+  {
+    id: 4,
+    musteri_adi: "Zeynep Şahin",
+    konum: "Bursa",
+    yorum: "Hızlı ve güvenilir hizmet. Kesinlikle tavsiye ediyorum.",
+    puan: 5
+  },
+];
 
+export default function Testimonials() {
   return (
     <section className="bg-white py-24 sm:py-32" aria-label="Müşteri Yorumları">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -19,41 +54,93 @@ export default async function Testimonials() {
             Profesyonel hizmet kalitemiz ve müşteri memnuniyetimiz ile fark yaratıyoruz.
           </p>
         </header>
-        <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mt-20 lg:max-w-none lg:grid-cols-3">
-          {referanslar.map((referans) => (
-            <article key={referans.id} className="flex flex-col items-start justify-between bg-white p-6 shadow-lg rounded-lg">
-              <div className="flex items-center gap-x-4 text-xs">
-                <div className="flex items-center" role="img" aria-label={`${referans.puan} yıldız puan`}>
-                  {[0, 1, 2, 3, 4].map((rating) => (
-                    <StarIcon
-                      key={rating}
-                      className={classNames(
-                        referans.puan > rating ? 'text-yellow-400' : 'text-gray-200',
-                        'h-5 w-5 flex-shrink-0'
-                      )}
-                      aria-hidden="true"
-                    />
-                  ))}
-                </div>
-              </div>
-              <blockquote className="group relative">
-                <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">
-                  {referans.yorum}
-                </p>
-              </blockquote>
-              <footer className="relative mt-8">
-                <div className="flex items-center gap-x-4">
-                  <cite className="text-sm leading-6 not-italic">
-                    <p className="font-semibold text-gray-900">
-                      {referans.musteri_adi}
-                    </p>
-                  </cite>
-                </div>
-              </footer>
-            </article>
-          ))}
+
+        <div className="mx-auto mt-16">
+          <Swiper
+            modules={[Pagination, Autoplay]}
+            spaceBetween={30}
+            slidesPerView={1}
+            breakpoints={{
+              768: {
+                slidesPerView: 2,
+              },
+            }}
+            pagination={{
+              clickable: true,
+              bulletActiveClass: 'swiper-pagination-bullet-active !bg-indigo-600',
+            }}
+            autoplay={{
+              delay: 5000,
+              disableOnInteraction: false,
+            }}
+            className="pb-16 testimonials-swiper"
+          >
+            {testimonials.map((testimonial) => (
+              <SwiperSlide key={testimonial.id} className="px-2 py-1">
+                <article className="relative flex flex-col justify-between bg-white rounded-xl p-8 shadow-md hover:shadow-lg transition-shadow duration-300 h-full border border-gray-100">
+                  <div className="absolute top-6 right-8 text-indigo-100">
+                    <FaQuoteRight className="w-8 h-8" />
+                  </div>
+                  
+                  <div className="relative">
+                    <blockquote>
+                      <p className="text-gray-700 text-lg leading-relaxed mb-6">
+                        {testimonial.yorum}
+                      </p>
+                    </blockquote>
+                    
+                    <div className="flex items-center gap-x-4 text-xs mb-4">
+                      <div className="flex items-center" role="img" aria-label={`${testimonial.puan} yıldız puan`}>
+                        {[0, 1, 2, 3, 4].map((rating) => (
+                          <StarIcon
+                            key={rating}
+                            className={classNames(
+                              testimonial.puan > rating ? 'text-yellow-400' : 'text-gray-200',
+                              'h-5 w-5 flex-shrink-0'
+                            )}
+                            aria-hidden="true"
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <footer className="mt-6 border-t border-gray-100 pt-4">
+                    <div className="flex flex-col">
+                      <cite className="text-base font-semibold text-gray-900 not-italic">
+                        {testimonial.musteri_adi}
+                      </cite>
+                      <span className="text-sm text-gray-500 mt-1">
+                        {testimonial.konum}
+                      </span>
+                    </div>
+                  </footer>
+                </article>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
       </div>
+
+      <style jsx global>{`
+        .testimonials-swiper {
+          padding-bottom: 3rem !important;
+        }
+        .testimonials-swiper .swiper-pagination {
+          bottom: 0 !important;
+        }
+        .swiper-pagination-bullet {
+          background: #e5e7eb;
+          opacity: 1;
+          width: 10px;
+          height: 10px;
+          margin: 0 6px !important;
+        }
+        .swiper-pagination-bullet-active {
+          background: #4f46e5 !important;
+          transform: scale(1.2);
+        }
+      `}</style>
     </section>
   );
 } 
