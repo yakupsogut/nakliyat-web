@@ -129,6 +129,7 @@ export default function SiteAyarlariPage() {
         logo_url: yeniLogoUrl,
         logo_text: ayarlar?.logo_text,
         telefon: ayarlar?.telefon,
+        telefon_2: ayarlar?.telefon_2,
         email: ayarlar?.email,
         facebook_url: ayarlar?.facebook_url,
         instagram_url: ayarlar?.instagram_url,
@@ -359,6 +360,22 @@ export default function SiteAyarlariPage() {
                       type="tel"
                       value={ayarlar.telefon || ''}
                       onChange={(e) => setAyarlar({ ...ayarlar, telefon: e.target.value })}
+                      className="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-gray-100"
+                      placeholder="0212 123 45 67"
+                    />
+                  </div>
+                </div>
+
+                {/* İkinci Telefon */}
+                <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start">
+                  <label className="block text-sm font-medium text-gray-200 sm:mt-px sm:pt-2">
+                    İkinci Telefon
+                  </label>
+                  <div className="mt-1 sm:mt-0 sm:col-span-2">
+                    <input
+                      type="tel"
+                      value={ayarlar.telefon_2 || ''}
+                      onChange={(e) => setAyarlar({ ...ayarlar, telefon_2: e.target.value })}
                       className="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-gray-100"
                       placeholder="0212 123 45 67"
                     />

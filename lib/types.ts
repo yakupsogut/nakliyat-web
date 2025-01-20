@@ -73,6 +73,7 @@ export interface SiteAyarlari {
   created_at: string;
   updated_at: string;
   telefon: string;
+  telefon_2: string | null;
   email: string;
   facebook_url: string | null;
   instagram_url: string | null;
