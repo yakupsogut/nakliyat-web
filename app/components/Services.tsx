@@ -17,13 +17,13 @@ export default async function Services() {
           </p>
         </header>
         <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
-          <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
+          <div className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
             {hizmetler.map((hizmet) => (
               <article key={hizmet.id} className="flex flex-col bg-gray-800 rounded-lg p-6 hover:bg-gray-700 transition-colors">
-                <dt className="text-lg font-semibold leading-7 text-white">
-                  <h3>{hizmet.baslik}</h3>
-                </dt>
-                <dd className="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-300">
+                <h3 className="text-lg font-semibold leading-7 text-white">
+                  {hizmet.baslik}
+                </h3>
+                <div className="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-300">
                   <p className="flex-auto">{hizmet.aciklama}</p>
                   {hizmet.resim_url && (
                     <figure className="mt-4">
@@ -36,10 +36,10 @@ export default async function Services() {
                       />
                     </figure>
                   )}
-                </dd>
+                </div>
               </article>
             ))}
-          </dl>
+          </div>
         </div>
       </div>
     </section>
