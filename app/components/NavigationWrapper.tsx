@@ -5,6 +5,7 @@ import Topbar from './Topbar';
 import { MenuItem, SiteAyarlari, FooterMenuGroup } from '@/lib/types';
 import Footer from './Footer';
 import WhatsAppButton from './WhatsAppButton';
+import PhoneButton from './PhoneButton';
 import { usePathname } from 'next/navigation';
 
 interface NavigationWrapperProps {
@@ -45,6 +46,7 @@ export default function NavigationWrapper({ children, siteAyarlari, menuItems, f
         </main>
         <Footer siteAyarlari={siteAyarlari} footerMenuGroups={footerMenuGroups} />
         <WhatsAppButton siteAyarlari={siteAyarlari} />
+        <PhoneButton siteAyarlari={siteAyarlari} />
       </div>
     </>
   );

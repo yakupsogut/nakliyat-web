@@ -68,8 +68,10 @@ export default function ClientHeroSlider({ slides }: Props) {
               fill
               className="object-cover object-center"
               priority
-              sizes="100vw"
-              quality={90}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1920px"
+              quality={75}
+              loading="eager"
+              fetchPriority="high"
             />
           </motion.div>
         </AnimatePresence>
