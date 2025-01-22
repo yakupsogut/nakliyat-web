@@ -18,8 +18,8 @@ const nextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
   swcMinify: true,
+  optimizeFonts: true,
   experimental: {
-    optimizeCss: true,
     optimizePackageImports: ['@heroicons/react', 'react-icons'],
   },
 }
