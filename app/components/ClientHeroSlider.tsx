@@ -24,12 +24,13 @@ interface Props {
 export default function ClientHeroSlider({ slides }: Props) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     if (slides.length > 1 && isAutoPlaying) {
       const timer = setInterval(() => {
         setCurrentSlide((prev) => (prev + 1) % slides.length);
-      }, 5000); // Her 5 saniyede bir değişir
+      }, 5000);
 
       return () => clearInterval(timer);
     }
@@ -51,27 +52,27 @@ export default function ClientHeroSlider({ slides }: Props) {
 
   return (
     <header className="relative isolate overflow-hidden">
-      {/* Slider Container */}
       <div className="relative w-full aspect-[16/9] sm:aspect-[21/9]">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentSlide}
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            animate={{ opacity: isLoaded ? 1 : 0 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: 0.5 }}
             className="absolute inset-0"
           >
             <Image
               src={convertSupabaseImageUrl(slides[currentSlide].image_url, 'public')}
-              alt={slides[currentSlide].title}
+              alt={slides[currentSlide].title || ''}
               fill
               className="object-cover object-center"
               priority
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1920px"
+              sizes="100vw"
               quality={75}
-              loading="eager"
-              fetchPriority="high"
+              onLoad={() => setIsLoaded(true)}
+              placeholder="blur"
+              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx4eHRoaHSQrJyEwPENDODM4QkVFRUBBRUVGRklJRkVHT01PS01QUFBQUFBQUFBQUFz/2wBDAR0XFxodGh0gICBcQjZCXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFz/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAb/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
             />
           </motion.div>
         </AnimatePresence>
@@ -85,7 +86,7 @@ export default function ClientHeroSlider({ slides }: Props) {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 20 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
+                transition={{ duration: 0.5 }}
                 className="max-w-[240px] sm:max-w-lg text-left"
               >
                 <div className="bg-black/30 backdrop-blur-sm p-2.5 sm:p-8 rounded-xl">
@@ -94,7 +95,7 @@ export default function ClientHeroSlider({ slides }: Props) {
                       className="text-lg sm:text-4xl font-bold tracking-tight text-white lg:text-5xl drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 0.3 }}
+                      transition={{ duration: 0.5 }}
                     >
                       {slides[currentSlide].title}
                     </motion.h1>
@@ -104,7 +105,7 @@ export default function ClientHeroSlider({ slides }: Props) {
                       className="mt-1 sm:mt-4 text-[10px] sm:text-lg lg:text-xl leading-4 sm:leading-8 text-gray-100 drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 0.4 }}
+                      transition={{ duration: 0.5 }}
                     >
                       {slides[currentSlide].description}
                     </motion.p>
@@ -114,7 +115,7 @@ export default function ClientHeroSlider({ slides }: Props) {
                       className="mt-2 sm:mt-8"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 0.5 }}
+                      transition={{ duration: 0.5 }}
                     >
                       <Link
                         href={slides[currentSlide].button_url}
