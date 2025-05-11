@@ -1,5 +1,4 @@
 import { supabase } from '@/lib/supabase';
-import IstatistikKart from './components/IstatistikKart';
 import { createServerClient } from '@/lib/supabase';
 import { Metadata } from 'next';
 import Link from 'next/link';
