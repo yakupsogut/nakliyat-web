@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { convertSupabaseImageUrl } from '@/lib/utils';
+import { FaTruck } from 'react-icons/fa';
 
 interface HeroSlide {
   id: string;
@@ -30,7 +31,7 @@ export default function ClientHeroSlider({ slides }: Props) {
     if (slides.length > 1 && isAutoPlaying) {
       const timer = setInterval(() => {
         setCurrentSlide((prev) => (prev + 1) % slides.length);
-      }, 5000);
+      }, 7000);
 
       return () => clearInterval(timer);
     }
@@ -51,17 +52,19 @@ export default function ClientHeroSlider({ slides }: Props) {
   }
 
   return (
-    <header className="relative isolate overflow-hidden">
-      <div className="relative w-full aspect-[16/9] sm:aspect-[21/9]">
+    <header className="relative isolate">
+      <div className="relative w-full aspect-[16/9] sm:aspect-[21/9] lg:aspect-[2.5/1]">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentSlide}
             initial={{ opacity: 0 }}
             animate={{ opacity: isLoaded ? 1 : 0 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.7 }}
             className="absolute inset-0"
           >
+            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent z-10" />
+            
             <Image
               src={convertSupabaseImageUrl(slides[currentSlide].image_url, 'public')}
               alt={slides[currentSlide].title || ''}
@@ -69,7 +72,7 @@ export default function ClientHeroSlider({ slides }: Props) {
               className="object-cover object-center"
               priority
               sizes="100vw"
-              quality={75}
+              quality={85}
               onLoad={() => setIsLoaded(true)}
               placeholder="blur"
               blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx4eHRoaHSQrJyEwPENDODM4QkVFRUBBRUVGRklJRkVHT01PS01QUFBQUFBQUFBQUFz/2wBDAR0XFxodGh0gICBcQjZCXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFz/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAb/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
@@ -77,86 +80,83 @@ export default function ClientHeroSlider({ slides }: Props) {
           </motion.div>
         </AnimatePresence>
 
-        {/* Content - Sadece title, description veya button varsa göster */}
-        {(slides[currentSlide].title || slides[currentSlide].description || (slides[currentSlide].button_url && slides[currentSlide].button_text)) && (
-          <div className="absolute inset-y-0 left-[10%] sm:left-[7%] flex items-center">
-            <div className="relative w-[70%] sm:w-full">
-              <motion.div
-                key={currentSlide}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                transition={{ duration: 0.5 }}
-                className="max-w-[240px] sm:max-w-lg text-left"
-              >
-                <div className="bg-black/30 backdrop-blur-sm p-2.5 sm:p-8 rounded-xl">
-                  {slides[currentSlide].title && (
-                    <motion.h1 
-                      className="text-lg sm:text-4xl font-bold tracking-tight text-white lg:text-5xl drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      {slides[currentSlide].title}
-                    </motion.h1>
-                  )}
-                  {slides[currentSlide].description && (
-                    <motion.p 
-                      className="mt-1 sm:mt-4 text-[10px] sm:text-lg lg:text-xl leading-4 sm:leading-8 text-gray-100 drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      {slides[currentSlide].description}
-                    </motion.p>
-                  )}
-                  {slides[currentSlide].button_url && slides[currentSlide].button_text && (
-                    <motion.div 
-                      className="mt-2 sm:mt-8"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <Link
-                        href={slides[currentSlide].button_url}
-                        className="inline-flex items-center rounded-full bg-white px-2.5 sm:px-8 py-1 sm:py-4 text-[10px] sm:text-base font-semibold text-gray-900 shadow-lg hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-all duration-300"
-                      >
-                        {slides[currentSlide].button_text}
-                        <svg className="ml-1 h-2 w-2 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                        </svg>
-                      </Link>
-                    </motion.div>
-                  )}
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        )}
+        <div className="absolute inset-0 z-20">
+          <div className="h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center">
+            <motion.div
+              key={currentSlide}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              transition={{ duration: 0.7 }}
+              className="max-w-xl"
+            >
+              {slides[currentSlide].title && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, delay: 0.2 }}
+                >
+                  <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 drop-shadow-lg">
+                    {slides[currentSlide].title}
+                  </h1>
+                </motion.div>
+              )}
+              
+              {slides[currentSlide].description && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, delay: 0.4 }}
+                >
+                  <p className="text-sm sm:text-lg lg:text-xl text-gray-100 mb-6 drop-shadow-lg">
+                    {slides[currentSlide].description}
+                  </p>
+                </motion.div>
+              )}
 
-        {/* Navigation Arrows */}
+              {slides[currentSlide].button_url && slides[currentSlide].button_text && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, delay: 0.6 }}
+                >
+                  <Link
+                    href={slides[currentSlide].button_url}
+                    className="inline-flex items-center gap-2 bg-yellow-500 text-gray-900 px-6 py-3 rounded-lg font-medium hover:bg-yellow-400 transition-all duration-300 hover:scale-105 shadow-lg group"
+                  >
+                    <FaTruck className="h-5 w-5" />
+                    <span>{slides[currentSlide].button_text}</span>
+                    <svg className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
+                  </Link>
+                </motion.div>
+              )}
+            </motion.div>
+          </div>
+        </div>
+
         {slides.length > 1 && (
           <>
             <button
               onClick={handlePrevSlide}
-              className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 p-2 sm:p-3 rounded-full bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-colors shadow-lg"
+              className="absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 p-2 sm:p-3 rounded-full bg-black/30 hover:bg-black/50 text-white transition-all duration-300 backdrop-blur-sm shadow-lg group z-20"
               aria-label="Önceki slide"
             >
-              <ChevronLeftIcon className="h-5 w-5 sm:h-6 sm:w-6 drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]" />
+              <ChevronLeftIcon className="h-5 w-5 sm:h-6 sm:w-6 transition-transform group-hover:-translate-x-1" />
             </button>
             <button
               onClick={handleNextSlide}
-              className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 p-2 sm:p-3 rounded-full bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-colors shadow-lg"
+              className="absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 p-2 sm:p-3 rounded-full bg-black/30 hover:bg-black/50 text-white transition-all duration-300 backdrop-blur-sm shadow-lg group z-20"
               aria-label="Sonraki slide"
             >
-              <ChevronRightIcon className="h-5 w-5 sm:h-6 sm:w-6 drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]" />
+              <ChevronRightIcon className="h-5 w-5 sm:h-6 sm:w-6 transition-transform group-hover:translate-x-1" />
             </button>
           </>
         )}
 
-        {/* Dots Navigation */}
         {slides.length > 1 && (
-          <div className="absolute bottom-4 sm:bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2 sm:space-x-3">
+          <div className="absolute bottom-6 lg:bottom-8 left-1/2 transform -translate-x-1/2 flex gap-2 z-20">
             {slides.map((_, index) => (
               <button
                 key={index}
@@ -164,11 +164,11 @@ export default function ClientHeroSlider({ slides }: Props) {
                   setIsAutoPlaying(false);
                   setCurrentSlide(index);
                 }}
-                className={`w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full transition-all duration-300 shadow-lg ${
+                className={`transition-all duration-300 ${
                   index === currentSlide 
-                    ? 'bg-white scale-110 w-4 sm:w-5'
-                    : 'bg-white/70 hover:bg-white'
-                }`}
+                    ? 'w-8 h-2 bg-yellow-500'
+                    : 'w-2 h-2 bg-white/70 hover:bg-white'
+                } rounded-full`}
                 aria-label={`Slide ${index + 1}`}
               />
             ))}

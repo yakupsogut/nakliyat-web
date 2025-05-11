@@ -168,33 +168,54 @@ export default async function BlogDetay({
   return (
     <>
       <JsonLd data={articleSchema} />
-      <main className="min-h-screen bg-white">
-      
-        
-        <article className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-            {/* Ana İçerik */}
-            <div className="lg:col-span-8">
-              {/* Meta Bilgiler */}
-              <div className="mb-6">
-                <div className="flex items-center gap-4">
-                  <span className="px-3 py-1 bg-blue-600 text-white rounded-full text-sm font-medium">
-                    {post.kategori}
-                  </span>
-                  <span className="text-gray-500 text-sm">{readingTime} dk okuma</span>
+      <main className="bg-gray-50">
+        {/* Hero Bölümü */}
+        <div className="relative py-16 bg-white shadow-sm">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="relative">
+              {/* Kategori ve Okuma Süresi */}
+              <div className="flex items-center gap-4 mb-6">
+                <span className="px-4 py-1.5 bg-yellow-50 text-yellow-600 rounded-full text-sm font-medium">
+                  {post.kategori}
+                </span>
+                <div className="flex items-center text-gray-600 text-sm">
+                  <svg className="w-4 h-4 mr-2 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  {readingTime} dakika okuma
                 </div>
-                
-                <h1 className="text-4xl font-bold text-gray-900 mt-4 mb-6">
-                  {post.baslik}
-                </h1>
-                
-                <p className="text-xl text-gray-600">
-                  {post.ozet}
-                </p>
               </div>
 
+              {/* Başlık ve Özet */}
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                {post.baslik}
+              </h1>
+              <p className="text-xl text-gray-600 max-w-3xl">
+                {post.ozet}
+              </p>
+
+              {/* Tarih ve Paylaş */}
+              <div className="flex items-center justify-between mt-8">
+                <time className="text-gray-500">
+                  {new Date(post.created_at).toLocaleDateString('tr-TR', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </time>
+                <BlogPaylas baslik={post.baslik} />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Ana İçerik */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            {/* Sol Kolon - Ana İçerik */}
+            <div className="lg:col-span-8">
               {/* Kapak Görseli */}
-              <div className="aspect-[16/9] rounded-xl overflow-hidden mb-8 shadow-lg">
+              <div className="rounded-2xl overflow-hidden mb-12 shadow-xl">
                 <Image
                   src={post.kapak_resmi}
                   alt={`${post.baslik} - ${post.kategori} konulu blog yazısının kapak görseli`}
@@ -205,53 +226,52 @@ export default async function BlogDetay({
                 />
               </div>
 
+              {/* Blog İçeriği */}
               <div className="prose prose-lg max-w-none">
                 <BlogIcerik icerik={post.icerik} />
-
-                {/* Etiketler ve Paylaş Butonları */}
-                <div className="mt-12 not-prose flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-                  {/* Etiketler */}
-                  {post.etiketler && post.etiketler.length > 0 && (
-                    <div className="flex flex-wrap gap-2">
-                      {post.etiketler.map((etiket: string, index: number) => (
-                        <span
-                          key={index}
-                          className="inline-flex items-center rounded-full bg-gray-100 px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 transition-colors cursor-pointer"
-                        >
-                          #{etiket}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-
-                  <BlogPaylas baslik={post.baslik} />
-                </div>
               </div>
+
+              {/* Etiketler */}
+              {post.etiketler && post.etiketler.length > 0 && (
+                <div className="mt-12 pt-6 border-t border-gray-200">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Etiketler</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {post.etiketler.map((etiket: string, index: number) => (
+                      <span
+                        key={index}
+                        className="inline-flex items-center rounded-full bg-gray-100 px-4 py-1.5 text-sm font-medium text-gray-800 hover:bg-gray-200 transition-colors cursor-pointer"
+                      >
+                        #{etiket}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
-            {/* Yan Panel */}
-            <div className="lg:col-span-4">
+            {/* Sağ Kolon - İlgili ve Son Yazılar */}
+            <div className="lg:col-span-4 space-y-12">
               {/* İlgili Yazılar */}
               {relatedPosts && relatedPosts.length > 0 && (
-                <div className="mb-12">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">İlgili Yazılar</h2>
+                <div className="bg-white rounded-2xl p-6 shadow-sm">
+                  <h2 className="text-xl font-bold text-gray-900 mb-6">İlgili Yazılar</h2>
                   <div className="space-y-6">
                     {relatedPosts.map((relatedPost) => (
                       <Link 
                         key={relatedPost.id} 
                         href={`/blog/${relatedPost.slug}`}
-                        className="block group"
+                        className="group block"
                       >
-                        <div className="aspect-[16/9] rounded-lg overflow-hidden mb-3">
+                        <div className="aspect-video rounded-xl overflow-hidden mb-3">
                           <Image
                             src={relatedPost.kapak_resmi}
-                            alt={`${relatedPost.baslik} - İlgili blog yazısı`}
+                            alt={relatedPost.baslik}
                             width={400}
                             height={225}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           />
                         </div>
-                        <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+                        <h3 className="font-semibold text-gray-900 group-hover:text-primary transition-colors line-clamp-2">
                           {relatedPost.baslik}
                         </h3>
                       </Link>
@@ -262,8 +282,8 @@ export default async function BlogDetay({
 
               {/* Son Yazılar */}
               {recentPosts && recentPosts.length > 0 && (
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Son Yazılar</h2>
+                <div className="bg-white rounded-2xl p-6 shadow-sm">
+                  <h2 className="text-xl font-bold text-gray-900 mb-6">Son Yazılar</h2>
                   <div className="space-y-6">
                     {recentPosts.map((recentPost) => (
                       <Link 
@@ -271,17 +291,17 @@ export default async function BlogDetay({
                         href={`/blog/${recentPost.slug}`}
                         className="flex items-center gap-4 group"
                       >
-                        <div className="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden">
+                        <div className="flex-shrink-0 w-24 h-24 rounded-xl overflow-hidden">
                           <Image
                             src={recentPost.kapak_resmi}
-                            alt={`${recentPost.baslik} - Son eklenen blog yazısı`}
-                            width={80}
-                            height={80}
+                            alt={recentPost.baslik}
+                            width={96}
+                            height={96}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           />
                         </div>
-                        <div>
-                          <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-semibold text-gray-900 group-hover:text-primary transition-colors line-clamp-2">
                             {recentPost.baslik}
                           </h3>
                           <p className="text-sm text-gray-500 mt-1">
@@ -299,7 +319,7 @@ export default async function BlogDetay({
               )}
             </div>
           </div>
-        </article>
+        </div>
       </main>
     </>
   );

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { FooterMenuGroup, SiteAyarlari } from '@/lib/types';
 import type { SVGProps, ReactElement } from 'react';
+import { FaTruck, FaMapMarkerAlt, FaPhoneAlt, FaEnvelope } from 'react-icons/fa';
 
 interface IconProps extends SVGProps<SVGSVGElement> {
   'aria-hidden'?: boolean | 'true' | 'false';
@@ -63,91 +64,97 @@ export default function Footer({ siteAyarlari, footerMenuGroups }: FooterProps) 
   };
 
   return (
-    <footer className="bg-gray-900" aria-labelledby="footer-heading">
-      <h2 id="footer-heading" className="sr-only">
-        Site Footer
-      </h2>
-      <div className="mx-auto max-w-7xl px-6 pb-8 pt-16 sm:pt-24 lg:px-8 lg:pt-16">
-        <div className="xl:grid xl:grid-cols-3 xl:gap-8">
-          <div className="space-y-8">
-            <Link href="/" className="text-2xl font-bold text-white" aria-label="Ana Sayfaya Git">
-              {siteAyarlari?.logo_text || 'NakliyatPro'}
+    <footer className="relative bg-gradient-to-b from-gray-900 to-black border-t border-gray-800" aria-labelledby="footer-heading">
+      <div className="mx-auto max-w-7xl px-6 pt-16 pb-12 lg:px-8">
+        {/* Logo ve Açıklama */}
+        <div className="mb-16 flex flex-col items-center text-center">
+          <Link href="/" className="group inline-flex items-center gap-3 text-3xl font-bold text-white hover:text-yellow-500 transition-colors" aria-label="Ana Sayfaya Git">
+            <div className="bg-yellow-500 p-3 rounded-xl group-hover:bg-yellow-600 transition-colors">
+              <FaTruck className="h-8 w-8 text-gray-900" />
+            </div>
+            <span>{siteAyarlari?.logo_text || 'NakliyatPro'}</span>
+          </Link>
+          <p className="mt-6 max-w-2xl text-base text-gray-300">
+            {siteAyarlari?.site_description || '20 yıllık tecrübemizle Türkiye\'nin önde gelen nakliyat şirketlerinden biri olarak hizmetinizdeyiz.'}
+          </p>
+        </div>
+
+        {/* İletişim Kartları */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+          <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 text-center hover:bg-gray-800/70 transition-colors group">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-yellow-500/10 text-yellow-500 mb-4 group-hover:scale-110 transition-transform">
+              <FaMapMarkerAlt className="w-6 h-6" />
+            </div>
+            <h3 className="text-lg font-semibold text-white mb-2">Adres</h3>
+            <p className="text-gray-400">{siteAyarlari?.adres || 'Örnek Mahallesi, Örnek Sokak No:1'}</p>
+          </div>
+
+          <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 text-center hover:bg-gray-800/70 transition-colors group">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-yellow-500/10 text-yellow-500 mb-4 group-hover:scale-110 transition-transform">
+              <FaPhoneAlt className="w-6 h-6" />
+            </div>
+            <h3 className="text-lg font-semibold text-white mb-2">Telefon</h3>
+            <Link href={`tel:${siteAyarlari?.telefon}`} className="text-gray-400 hover:text-yellow-500 transition-colors">
+              {siteAyarlari?.telefon || '+90 (212) 123 45 67'}
             </Link>
-            <p className="text-sm leading-6 text-gray-300">
-              {siteAyarlari?.site_description || '20 yıllık tecrübemizle Türkiye&apos;nin önde gelen nakliyat şirketlerinden biri olarak hizmetinizdeyiz.'}
-            </p>
-            <nav aria-label="Sosyal Medya Bağlantıları">
-              <ul className="flex space-x-6">
-                {menuGroups.sosyal.map((item) => (
-                  <li key={item.name}>
+          </div>
+
+          <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 text-center hover:bg-gray-800/70 transition-colors group">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-yellow-500/10 text-yellow-500 mb-4 group-hover:scale-110 transition-transform">
+              <FaEnvelope className="w-6 h-6" />
+            </div>
+            <h3 className="text-lg font-semibold text-white mb-2">E-posta</h3>
+            <Link href={`mailto:${siteAyarlari?.email}`} className="text-gray-400 hover:text-yellow-500 transition-colors break-all">
+              {siteAyarlari?.email || 'info@nakliyatpro.com'}
+            </Link>
+          </div>
+        </div>
+
+        {/* Menü Grupları */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
+          {footerMenuGroups.map((group) => (
+            <nav key={group.id} aria-label={group.baslik}>
+              <h3 className="text-lg font-semibold text-yellow-500 mb-6">{group.baslik}</h3>
+              <ul role="list" className="space-y-4">
+                {group.menu_items?.map((item) => (
+                  <li key={item.id}>
                     <Link 
-                      href={item.href} 
-                      className="text-gray-500 hover:text-gray-400"
-                      aria-label={`${item.name} sayfamızı ziyaret et`}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      href={item.link} 
+                      className="text-gray-400 hover:text-yellow-500 transition-colors flex items-center gap-2 group"
                     >
-                      <span className="sr-only">{item.name}</span>
-                      <item.icon className="h-6 w-6" aria-hidden="true" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-yellow-500/50 group-hover:bg-yellow-500 transition-colors" />
+                      {item.baslik}
                     </Link>
                   </li>
                 ))}
               </ul>
             </nav>
-          </div>
-          <div className="mt-16 xl:col-span-2 xl:mt-0">
-            <div className="grid grid-cols-2 gap-8 md:grid-cols-3 md:gap-8">
-              {footerMenuGroups.map((group) => (
-                <nav key={group.id} className={group.id === footerMenuGroups[1]?.id ? "mt-0" : ""} aria-label={group.baslik}>
-                  <h3 className="text-sm font-semibold leading-6 text-white">{group.baslik}</h3>
-                  <ul role="list" className="mt-6 space-y-4">
-                    {group.menu_items?.map((item) => (
-                      <li key={item.id}>
-                        <Link href={item.link} className="text-sm leading-6 text-gray-300 hover:text-white">
-                          {item.baslik}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </nav>
-              ))}
-              <nav aria-label="İletişim Bilgileri" className="col-span-2 mt-10 md:col-span-1 md:mt-0">
-                <h3 className="text-sm font-semibold leading-6 text-white">İletişim</h3>
-                <ul role="list" className="mt-6 space-y-4">
-                  <li>
-                    <address className="not-italic">
-                      <Link href="#" className="text-sm leading-6 text-gray-300 hover:text-white">
-                        {siteAyarlari?.adres || 'Örnek Mahallesi, Örnek Sokak No:1'}
-                      </Link>
-                    </address>
-                  </li>
-                  <li>
-                    <Link 
-                      href={`tel:${siteAyarlari?.telefon}`} 
-                      className="text-sm leading-6 text-gray-300 hover:text-white"
-                      aria-label="Bizi telefonla arayın"
-                    >
-                      {siteAyarlari?.telefon || '+90 (212) 123 45 67'}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link 
-                      href={`mailto:${siteAyarlari?.email}`} 
-                      className="text-sm leading-6 text-gray-300 hover:text-white break-all"
-                      aria-label="Bize e-posta gönderin"
-                    >
-                      {siteAyarlari?.email || 'info@nakliyatpro.com'}
-                    </Link>
-                  </li>
-                </ul>
-              </nav>
-            </div>
-          </div>
+          ))}
         </div>
-        <div className="mt-16 border-t border-white/10 pt-8 sm:mt-20 lg:mt-24">
-          <p className="text-xs leading-5 text-gray-400">
+
+        {/* Alt Bilgi ve Sosyal Medya */}
+        <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-sm text-gray-400">
             &copy; {new Date().getFullYear()} {siteAyarlari?.logo_text || 'NakliyatPro'}. Tüm hakları saklıdır.
           </p>
+          
+          <nav aria-label="Sosyal Medya Bağlantıları">
+            <ul className="flex items-center gap-4">
+              {menuGroups.sosyal.map((item) => (
+                <li key={item.name}>
+                  <Link 
+                    href={item.href} 
+                    className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gray-800 text-gray-400 hover:bg-yellow-500 hover:text-white transition-all transform hover:scale-110"
+                    aria-label={`${item.name} sayfamızı ziyaret et`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <item.icon className="h-5 w-5" aria-hidden="true" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
       </div>
     </footer>

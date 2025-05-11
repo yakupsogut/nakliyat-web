@@ -2,8 +2,7 @@ import { createServerClient } from '@/lib/supabase';
 import JsonLd from '@/app/components/JsonLd';
 import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
-
-
+import { MapPinIcon, PhoneIcon, EnvelopeIcon, ClockIcon } from '@heroicons/react/24/outline';
 
 const ContactForm = dynamic(() => import('../components/ContactForm'), {
   loading: () => (
@@ -12,14 +11,12 @@ const ContactForm = dynamic(() => import('../components/ContactForm'), {
 });
 
 export default async function Contact() {
-  // Site ayarlarını al
   const supabase = createServerClient();
   const { data: siteAyarlari } = await supabase
     .from('site_ayarlari')
     .select('*')
     .single();
 
-  // Genel ayarları al
   const { data: generalSettings } = await supabase
     .from('site_ayarlari')
     .select('*')
@@ -60,53 +57,96 @@ export default async function Contact() {
   };
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-gray-50">
       <JsonLd data={localBusinessSchema} />
-      <div className="mx-auto max-w-7xl px-6 lg:px-8 py-24 sm:py-16">
-        <div className="mx-auto max-w-2xl">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">İletişim</h2>
-          <p className="mt-6 text-lg leading-8 text-gray-600">
-            Bizimle iletişime geçmek için aşağıdaki formu doldurabilir veya iletişim bilgilerimizi kullanabilirsiniz.
-          </p>
+      
+      {/* Hero Section */}
+      <div className="relative bg-gradient-to-r from-yellow-500 to-yellow-600 py-24">
+        <div className="absolute inset-0 bg-black opacity-40"></div>
+        <div className="relative container mx-auto px-4">
+          <div className="text-center max-w-3xl mx-auto">
+            <h1 className="text-5xl font-extrabold text-white mb-6">Bizimle İletişime Geçin</h1>
+            <p className="text-xl text-gray-100">
+              Profesyonel nakliyat hizmetlerimiz hakkında bilgi almak için bize ulaşın. Size yardımcı olmaktan mutluluk duyarız.
+            </p>
+          </div>
+        </div>
+      </div>
 
-          <div className="mt-10 grid grid-cols-1 gap-10 sm:grid-cols-2">
-            <div>
-              <h3 className="text-lg font-semibold leading-8 text-gray-900">İletişim Bilgileri</h3>
-              <dl className="mt-6 space-y-4 text-base leading-7 text-gray-600">
-                {siteAyarlari?.adres && (
-                  <div>
-                    <dt className="font-semibold">Adres</dt>
-                    <dd>{siteAyarlari.adres}</dd>
-                  </div>
-                )}
-                {siteAyarlari?.telefon && (
-                  <div>
-                    <dt className="font-semibold">Telefon</dt>
-                    <dd>
-                      <a href={`tel:${siteAyarlari.telefon}`} className="hover:text-blue-600">
-                        {siteAyarlari.telefon}
-                      </a>
-                    </dd>
-                  </div>
-                )}
-                {siteAyarlari?.email && (
-                  <div>
-                    <dt className="font-semibold">E-posta</dt>
-                    <dd>
-                      <a href={`mailto:${siteAyarlari.email}`} className="hover:text-blue-600">
-                        {siteAyarlari.email}
-                      </a>
-                    </dd>
-                  </div>
-                )}
-              </dl>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-semibold leading-8 text-gray-900">İletişim Formu</h3>
-              <div className="mt-6">
-                <ContactForm />
+      {/* Contact Info Cards */}
+      <div className="container mx-auto px-4 -mt-16 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {siteAyarlari?.adres && (
+            <div className="bg-white p-6 rounded-lg shadow-lg">
+              <div className="flex items-center mb-4">
+                <MapPinIcon className="h-8 w-8 text-yellow-600" />
+                <h3 className="text-xl font-bold ml-3 text-gray-900">Adres</h3>
               </div>
+              <p className="text-gray-800 font-medium text-base">{siteAyarlari.adres}</p>
+            </div>
+          )}
+          
+          {siteAyarlari?.telefon && (
+            <div className="bg-white p-6 rounded-lg shadow-lg">
+              <div className="flex items-center mb-4">
+                <PhoneIcon className="h-8 w-8 text-yellow-600" />
+                <h3 className="text-xl font-bold ml-3 text-gray-900">Telefon</h3>
+              </div>
+              <a href={`tel:${siteAyarlari.telefon}`} className="text-gray-800 font-medium text-base hover:text-yellow-600 transition-colors">
+                {siteAyarlari.telefon}
+              </a>
+            </div>
+          )}
+          
+          {siteAyarlari?.email && (
+            <div className="bg-white p-6 rounded-lg shadow-lg">
+              <div className="flex items-center mb-4">
+                <EnvelopeIcon className="h-8 w-8 text-yellow-600" />
+                <h3 className="text-xl font-bold ml-3 text-gray-900">E-posta</h3>
+              </div>
+              <a href={`mailto:${siteAyarlari.email}`} className="text-gray-800 font-medium text-base hover:text-yellow-600 transition-colors">
+                {siteAyarlari.email}
+              </a>
+            </div>
+          )}
+          
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <div className="flex items-center mb-4">
+              <ClockIcon className="h-8 w-8 text-yellow-600" />
+              <h3 className="text-xl font-bold ml-3 text-gray-900">Çalışma Saatleri</h3>
+            </div>
+            <p className="text-gray-800 font-medium text-base">Hafta içi: 09:00 - 18:00</p>
+            <p className="text-gray-800 font-medium text-base">Hafta sonu: 09:00 - 18:00</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Contact Form Section */}
+      <div className="container mx-auto px-4 py-20">
+        <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-2">
+            <div className="p-8 bg-gradient-to-br from-yellow-500 to-yellow-600 text-white">
+              <h2 className="text-3xl font-bold mb-6">Bize Ulaşın</h2>
+              <p className="mb-8">
+                Sorularınız veya talepleriniz için formu doldurun. En kısa sürede size dönüş yapacağız.
+              </p>
+              <div className="space-y-4">
+                <div className="flex items-center">
+                  <MapPinIcon className="h-6 w-6 mr-3" />
+                  <span>Güvenilir ve Profesyonel Hizmet</span>
+                </div>
+                <div className="flex items-center">
+                  <PhoneIcon className="h-6 w-6 mr-3" />
+                  <span>7/24 Müşteri Desteği</span>
+                </div>
+                <div className="flex items-center">
+                  <EnvelopeIcon className="h-6 w-6 mr-3" />
+                  <span>Hızlı Geri Dönüş</span>
+                </div>
+              </div>
+            </div>
+            <div className="p-8">
+              <ContactForm />
             </div>
           </div>
         </div>

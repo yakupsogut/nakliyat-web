@@ -87,7 +87,7 @@ export default async function HizmetDetay({
               <div className="mt-8">
                 <Link
                   href="/hizmetler"
-                  className="text-blue-600 hover:text-blue-500"
+                  className="text-blue-500 hover:text-blue-600"
                 >
                   ← Hizmetler sayfasına dön
                 </Link>
@@ -129,95 +129,121 @@ export default async function HizmetDetay({
     <>
       <JsonLd data={serviceSchema} />
       <main className="min-h-screen bg-white">
-
-        <div className="py-5 sm:py-5">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        {/* Hero Section - Grid pattern olmadan */}
+        <div className="relative bg-gradient-to-r from-blue-600 to-blue-800 py-24">
+          <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto max-w-3xl">
               <Link
                 href="/hizmetler"
-                className="inline-flex items-center text-blue-600 hover:text-blue-500 mb-8"
+                className="inline-flex items-center text-blue-100 hover:text-white mb-8 group"
               >
-                ← Hizmetler
+                <svg 
+                  className="mr-2 h-5 w-5" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  strokeWidth="2" 
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                </svg>
+                Hizmetler
               </Link>
 
-              <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+              <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
                 {hizmet.baslik}
               </h1>
+              
+              <p className="mt-6 text-lg text-blue-100 leading-8">
+                {hizmet.aciklama}
+              </p>
+            </div>
+          </div>
+        </div>
 
+        {/* Resim Section */}
+        <div className="py-16">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="mx-auto max-w-3xl">
               {hizmet.resim_url && (
-                <div className="mt-8">
+                <div className="-mt-32 relative z-10">
                   <Image
                     src={convertSupabaseImageUrl(hizmet.resim_url, 'hizmet-images')}
                     alt={`${hizmet.baslik} - Detaylı hizmet bilgileri ve özellikleri`}
                     width={1200}
                     height={675}
-                    className="w-full rounded-2xl object-cover shadow-lg"
+                    className="w-full rounded-2xl object-cover shadow-xl"
                   />
                 </div>
               )}
 
-              <div className="mt-8 prose prose-lg prose-blue max-w-none">
-                <p className="text-xl text-gray-600 leading-8">
-                  {hizmet.aciklama}
-                </p>
-
-                {hizmet.ozellikler && (
-                  <div className="mt-12">
-                    <h2 className="text-2xl font-bold text-gray-900">
-                      Hizmet Özellikleri
-                    </h2>
-                    <ul className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                      {hizmet.ozellikler.map((ozellik: string, index: number) => (
-                        <li
-                          key={index}
-                          className="flex items-center text-gray-600"
-                        >
-                          <svg
-                            className="h-5 w-5 flex-none text-blue-600"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                            aria-hidden="true"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                          <span className="ml-3">{ozellik}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                <div className="mt-12">
-                  <h2 className="text-2xl font-bold text-gray-900">
-                    Fiyat Teklifi Alın
+              {hizmet.ozellikler && (
+                <div className="mt-16">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                    Hizmet Özellikleri
                   </h2>
-                  <p className="mt-4 text-gray-600">
-                    Bu hizmet hakkında detaylı bilgi ve fiyat teklifi almak için hemen bizimle iletişime geçin.
+                  <p className="text-gray-500 mb-8">
+                    Size sunduğumuz profesyonel hizmetin detayları
                   </p>
-                  <div className="mt-8 flex gap-x-6">
-                    <Link
-                      href="/teklif-al"
-                      className="rounded-md bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-                    >
-                      Ücretsiz Teklif Al
-                    </Link>
-                    <Link
-                      href="/iletisim"
-                      className="rounded-md bg-white px-6 py-3 text-base font-semibold text-blue-600 shadow-sm ring-1 ring-inset ring-blue-600 hover:bg-gray-50"
-                    >
-                      Bize Ulaşın
-                    </Link>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {hizmet.ozellikler.map((ozellik: string, index: number) => (
+                      <div
+                        key={index}
+                        className="group relative overflow-hidden rounded-xl border border-gray-200 bg-white p-6 hover:border-yellow-500 hover:shadow-lg transition-all duration-300"
+                      >
+                        <div className="flex items-center">
+                          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-yellow-500 text-gray-900 group-hover:scale-110 transition-transform duration-300">
+                            <svg
+                              className="h-6 w-6"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth="2"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                              />
+                            </svg>
+                          </div>
+                          <div className="ml-4 flex-1">
+                            <p className="text-lg font-medium text-gray-700 group-hover:text-yellow-600 transition-colors duration-300">
+                              {ozellik}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="absolute bottom-0 left-0 h-1 w-0 bg-yellow-500 group-hover:w-full transition-all duration-300"></div>
+                      </div>
+                    ))}
                   </div>
+                </div>
+              )}
+
+              <div className="mt-16 rounded-2xl bg-gray-50 p-8">
+                <h2 className="text-2xl font-bold text-gray-900">
+                  Fiyat Teklifi Alın
+                </h2>
+                <p className="mt-4 text-gray-600">
+                  Bu hizmet hakkında detaylı bilgi ve fiyat teklifi almak için hemen bizimle iletişime geçin.
+                </p>
+                <div className="mt-8 flex flex-col sm:flex-row gap-4">
+                  <Link
+                    href="/teklif-al"
+                    className="rounded-lg bg-yellow-500 px-8 py-4 text-base font-semibold text-gray-900 shadow-sm hover:bg-yellow-600 transition-colors duration-200"
+                  >
+                    Ücretsiz Teklif Al
+                  </Link>
+                  <Link
+                    href="/iletisim"
+                    className="rounded-lg bg-white px-8 py-4 text-base font-semibold text-gray-900 shadow-sm ring-1 ring-yellow-500 hover:bg-yellow-50 transition-colors duration-200"
+                  >
+                    Bize Ulaşın
+                  </Link>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
       </main>
     </>
   );

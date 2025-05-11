@@ -48,23 +48,65 @@ export default async function TeklifAlPage() {
   return (
     <>
       <JsonLd data={contactPageSchema} />
-      <main className="min-h-screen bg-white">
-        
-        <div className="py-10 sm:py-10">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="mx-auto max-w-2xl text-center">
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Teklif Al</h2>
-              <p className="mt-6 text-lg leading-8 text-gray-600">
-                Ücretsiz fiyat teklifi almak için formu doldurun, uzmanlarımız en kısa sürede size ulaşsın.
-              </p>
-            </div>
+      <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+        <div className="relative isolate">
+          {/* Dekoratif arka plan elementleri */}
+          <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
+            <div className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" />
+          </div>
 
-            <div className="mx-auto mt-16 max-w-2xl">
-              <TeklifForm />
+          <div className="py-16 sm:py-24">
+            <div className="mx-auto max-w-7xl px-6 lg:px-8">
+              <div className="mx-auto max-w-3xl">
+                <div className="text-center">
+                  <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+                    Ücretsiz Teklif Alın
+                  </h1>
+                  <p className="mt-6 text-lg leading-8 text-gray-600">
+                    Profesyonel nakliyat hizmetlerimiz için hemen teklif alın. Size özel en uygun fiyatları sunalım.
+                  </p>
+                </div>
+
+                {/* Özellikler */}
+                <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-3 lg:mt-20">
+                  {[
+                    {
+                      title: 'Hızlı Yanıt',
+                      description: '24 saat içinde dönüş',
+                      icon: '⚡'
+                    },
+                    {
+                      title: 'Ücretsiz Keşif',
+                      description: 'Yerinde inceleme',
+                      icon: '🏠'
+                    },
+                    {
+                      title: 'Güvenli Taşıma',
+                      description: 'Sigortalı hizmet',
+                      icon: '🛡️'
+                    }
+                  ].map((feature) => (
+                    <div key={feature.title} className="rounded-xl bg-white p-8 shadow-sm ring-1 ring-gray-200">
+                      <div className="text-3xl mb-4">{feature.icon}</div>
+                      <h3 className="text-lg font-semibold text-gray-900">{feature.title}</h3>
+                      <p className="mt-2 text-gray-600">{feature.description}</p>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Form */}
+                <div className="mt-16 rounded-2xl bg-white p-8 shadow-lg ring-1 ring-gray-200">
+                  <TeklifForm />
+                </div>
+              </div>
             </div>
           </div>
-        </div>
 
+          {/* Alt dekoratif element */}
+          <div className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]">
+            <div className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-20 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]" />
+          </div>
+        </div>
       </main>
     </>
   );

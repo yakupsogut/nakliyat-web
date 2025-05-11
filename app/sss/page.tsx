@@ -20,11 +20,10 @@ export default async function SSSPage() {
   const kategoriler = [...new Set(sorular?.map(soru => soru.kategori))];
 
   return (
-    <main className="min-h-screen bg-white">
-      
-      <div className="py-10 sm:py-10">
+    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      <div className="py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center">
+          <div className="text-center">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
               Sıkça Sorulan Sorular
             </h1>
