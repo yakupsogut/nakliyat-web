@@ -17,7 +17,7 @@ VALUES (
 ON CONFLICT (bucket_id, name) DO NOTHING;
 
 -- Enable RLS
-ALTER TABLE storage.objects ENABLE ROW LEVEL SECURITY;
+--ALTER TABLE storage.objects ENABLE ROW LEVEL SECURITY;
 
 -- Create policies
 DROP POLICY IF EXISTS "Public Access" ON storage.objects;
